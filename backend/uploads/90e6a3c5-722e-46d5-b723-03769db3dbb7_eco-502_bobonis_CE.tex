@@ -1,0 +1,2362 @@
+%% LyX 2.3.6.1 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[11pt,english,usenames,dvipsnames]{article}
+\usepackage{mathpazo}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\usepackage{geometry}
+\geometry{verbose,tmargin=2.54cm,bmargin=2.54cm,lmargin=2.54cm,rmargin=2.54cm}
+\setlength{\parindent}{2em}
+\usepackage{color}
+\usepackage{babel}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage[authoryear]{natbib}
+\onehalfspacing
+\usepackage[unicode=true,
+ bookmarks=false,
+ breaklinks=false,pdfborder={0 0 1},backref=false,colorlinks=true]
+ {hyperref}
+\hypersetup{
+ hypertexnames=false,allcolors=OliveGreen}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\usepackage{babel}
+\usepackage{bbm}
+\usepackage{placeins}
+%\usepackage[osf]{mathpazo}
+
+%\usepackage[usenames,dvipsnames]{xcolor}
+
+\usepackage{fancyhdr}
+\usepackage{etoolbox}
+\usepackage[affil-it]{authblk}
+\usepackage{array}
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+
+\patchcmd{\@fancyhead}{\rlap}{\color{OliveGreen}\rlap}{}{}
+\patchcmd{\headrule}{\hrule}{\color{OliveGreen}\hrule}{}{}
+\patchcmd{\@fancyfoot}{\rlap}{\color{OliveGreen}\rlap}{}{}
+\patchcmd{\footrule}{\hrule}{\color{OliveGreen}\hrule}{}{}
+
+\usepackage{titlesec}
+
+\titleformat{\section}
+{\color{Black}\normalfont\Large\bfseries}
+{\color{Black}\thesection}{1em}{}
+
+\newcommand{\jtable}[4]{
+\input{#1}
+\hline\hline
+\end{tabular}
+\\ \vspace{0.1cm} \parbox{#4}{\footnotesize #3} 
+\label{#2}
+\end{table}
+}
+
+%\renewcommand{\footnotesize}{\fontsize{10pt}{11pt}\selectfont}
+
+\makeatother
+
+   \def\changesfont{\fontsize{5}{5}\selectfont}%
+   \setlength{\marginparwidth}{20mm}
+   \setlength{\marginparsep}{4pt}
+      \usepackage{soul}
+      \sethlcolor{cyan!30}%\hl{Text}
+   \usepackage[commentmarkup=todo,todonotes={textsize=changesfont}]{changes}
+   \definechangesauthor[name=CE, color=cyan]{CE}
+
+
+\begin{document}
+\title{\vspace{-1.5cm}Legal Reforms, Conditional Cash Transfers, and Intimate
+Partner Violence: Evidence from Mexico\thanks{{\scriptsize{}This paper supersedes an earlier working paper titled
+\textquotedblleft Conditional Cash Transfers for Women and Spousal
+Violence: Evidence of the Long-Term Relationship from the Oportunidades
+Program in Rural Mexico\textquotedblright. We thank Ruizhi Zhu for
+excellent research assistance. We are grateful to Siwan Anderson,
+Trinidad Beleche, Dwayne Benjamin, Matthieu Chemin, Sonia Laszlo,
+Ben Nyblade, Torsten Persson, and especially Laura Chioda, Fabian
+Lange, and Norbert Schady whose suggestions greatly improved the paper.
+We also thank seminar participants at McGill University,
+the Canadian Institute for Advanced Research IOG Program, the World
+Bank, and the Inter-American Development Bank for helpful comments;
+Ted Miguel and his research team for sharing their crime data. We
+also gratefully acknowledge funding from the Canadian Institute for
+Advanced Research, the Canada Research Chairs Program, the Inter-American
+Development Bank, and the World Bank. The views expressed here are
+those of the authors and do not necessarily reflect the views of the
+funding institutions. We are responsible for any errors that remain.}}\\ \textbf{Word Count: 7300}}
+\author{Gustavo J. Bobonis\thanks{{\scriptsize{}Professor, Department of Economics, University of Toronto,
+BREAD, and J-PAL. Address: 150 St. George St., Toronto, Ontario, M5S
+3G7, Canada. Tel: 416-946-5299. Fax: 416-978-6713. E-mail: gustavo.bobonis@utoronto.ca}} \hspace{1cm}Roberto Castro\thanks{{\scriptsize{}Professor, Regional Center for Multidisciplinary Research,
+National Autonomous University of Mexico, Av. Universidad s/n, cto.
+2, Col. Chamilpa, Cuernavaca, Morelos, 62210, México. Tel: (52-777)-329-1853.
+E-mail: rcastro@crim.unam.mx}} \hspace{1cm}Juan S. Morales\thanks{{\scriptsize{}Associate Professor, Department of Economics, Lazaridis
+School of Business and Economics, Wilfrid Laurier University. Address:
+75 University Avenue West, Waterloo, ON, N2L 3C5, Canada. E-mail:
+jmorales@wlu.ca}} \vspace{-0.3cm}}
+\maketitle
+\begin{abstract}
+\onehalfspacing\textcolor{black}{\footnotesize{} We study the relationship
+between divorce law reforms codifying intimate partner violence (IPV)
+as legal grounds for unilateral divorce, the Oportunidades conditional
+cash transfer program, and the incidence of IPV in Mexico. Using data
+from three nationally representative surveys in 2003, 2006, and 2011,
+we show the legal reforms lead to a 55 percent increase in annual
+divorce rates, concentrated among couples with a history of violence.
+Comparing groups of beneficiary and non-beneficiary households within
+villages, we find that IPV rates converge for these couples in the
+longer-run. Marital selection plays an important role in explaining
+the \highlight[id=CE, comment={long-term ? or long-run ?\break ~\break This will continue, as US spelling is long-run more appropriate?}]{long-run} relationships.}{\footnotesize\par}
+
+\noindent \textbf{\textcolor{black}{\footnotesize{}JEL Codes:}}\textcolor{white}{\footnotesize{}
+}\textcolor{black}{\footnotesize{}J12, J16, K42}\textcolor{white}{\footnotesize{},
+}\\
+\textbf{\textcolor{black}{\footnotesize{}Keywords:}}\textcolor{black}{\footnotesize{}
+divorce laws; conditional cash transfer programs; Oportunidades; divorce;
+intimate partner violence; marital selection}{\footnotesize\par}
+\end{abstract}
+\pagebreak\doublespacing
+
+\section{Introduction}
+
+Intimate partner violence (IPV) is the most common form of violence
+experienced by women globally: approximately 30 percent of women experience
+this in some form during their lifetimes. IPV has been condemned internationally
+as a serious and costly issue in human rights, public health, and women\textquoteright s
+personal security (\citealt{devries2013intimate,fearon2014benefits}).
+As a result, a growing number of national and subnational governments
+have instituted multiple efforts to promote women's ability to exit
+violent relationships as well as their empowerment within the household,
+partly with the intent of curbing intimate partner violence and other
+forms of violence against women.
+
+Governments in many (mostly Western) countries have over the past
+50 years introduced legal reforms that allow for unilateral divorce,
+which ease individuals' ability to exit marital relationships.\footnote{These unilateral divorce law reforms, which allow a spouse to file
+for divorce unilaterally and without the other spouse having committed
+fault have been instituted across a number of states in the United States, in Canada,
+and in European countries since the late 1960s.} Strategies more commonly adopted across the developing world have
+focused on the implementation of legal reforms and social programs
+that aim to enhance women's options outside of existing marriages
+(i.e., property rights and inheritance reforms that favor women; cash
+and in-kind transfers-based poverty alleviation programs targeted
+to adult women), based on a growing consensus that targeting resources
+to women can promote their empowerment within the household.\footnote{For a survey of the broad literature on policies aimed at promoting
+female empowerment, see \citet{duflo2012women}. \citet{buller2018mixed}
+and \citet{baranov2020theoretical} provide recent reviews of the
+work on cash transfers and intimate partner violence in low and middle-income
+countries. A growing body of research also studies how legal and judicial
+systems as well as access to justice programs can address gender inequities
+and improve women\textquoteright s rights and wellbeing, including
+exposure to intimate partner violence (see, for example, \citealp{anderson2018legal,miller2019female,amaral2019gender,kavanaugh2019women}).
+Surveys of this small but growing literature can be found in \citet{heise2011works,doyle2018economics}.} A literature evaluating this broad set of programs and policy reforms
+in developing country settings tends to find moderate or substantial
+short-term reductions in the incidence of IPV as a result of both
+types of policy reforms \citep{buller2018mixed}. However, there is
+limited evidence on the important issue of how local legal institutions
+interact with social support programs to curb the incidence of IPV
+\citep{baranov2020theoretical}.
+
+The present paper investigates a series of questions regarding the
+long-run relationship between divorce legislation, conditional cash
+transfer programs and the incidence of IPV. Specifically, do legal
+reforms that help ease individuals' ability to exit violent relationships
+achieve \emph{sustained }reductions in the incidence of IPV in developing
+country settings? If so, does this occur by inducing the marital dissolution
+of violent relationships? Do conditional cash transfer programs complement
+or substitute these legal efforts to curb intimate partner violence?
+
+We study these questions in the context of rural Mexico. Starting
+in 1997, state governments across the country adopted a series of
+legal reforms formally including intimate partner violence as legal
+grounds for unilateral divorce. Concurrently, the federal government
+introduced in 1997 the landmark PROGRESA/Oportunidades/Prospera conditional
+cash transfer program, one of the earliest and most comprehensive
+poverty alleviation programs in Latin America. We exploit the introduction
+of these policies to provide evidence of the short- and \highlight[id=CE, comment={short- and long-term. This style persists throughout. Consider changing all uses to short- and long-term ?}]{long-run} relationship
+between these legal reforms, the Oportunidades CCT program, and the
+incidence of intimate partner violence. We use data from three nationally
+representative surveys: the National Surveys on the Dynamics of Household
+Relationships (ENDIREH) of 2003, 2006, and 2011. These surveys collect
+detailed information on IPV as well as households' program participation
+and women's marital histories, and thus provide rich
+data to document the consequences of the reforms for marital dissolution
+and patterns of IPV across program beneficiary and non-beneficiary
+households.
+
+Our study uncovers several new findings regarding intimate partner
+violence in Mexico and its relationship with instituted policies.
+The legal reforms, which reduce the cost of exiting violent relationships,
+lead to a substantial increase in divorce rates in the Mexican countryside.
+Exploiting the staggered adoption of these legal changes across states,
+we estimate a 0.35 percentage point (55 percent) increase in annual
+divorce rates following the passage of the reform. \hl{These effects are
+concentrated among Oportunidades program beneficiary households, those
+in which women reporting having experienced intimate partner violence,
+and those having experienced violence in their} \highlight[id=CE, comment={check structure of clause.}]{childhood}, as an important
+predictor of IPV incidence. These patterns suggest that divorce and
+marital selection can be an important driving force towards reductions
+in the incidence of IPV.
+
+Second, we study potential changes over time in the relationship between
+receipt of the Oportunidades CCT program and IPV, across the 2003,
+2006, and 2011 surveys. We follow the observational analysis in \citet{bobonis2013public},
+comparing the incidence of women's experience of IPV across beneficiary
+and non-beneficiary households within villages (in 2003), and construct
+samples of comparable households for each of the two subsequent survey
+rounds (2006 and 2011). We initially show that the short-run relationship
+between receipt of the Oportunidades CCT and reductions in IPV documented
+in \citet{bobonis2013public} are largely concentrated in states that
+had adopted the legal reforms to the divorce laws before 2003, of which often are early
+adoption states. The estimates suggest that beneficiary women in these
+states were 18 percentage points less likely to be victims of physical
+or sexual violence compared to non-beneficiary women in non-reform
+states in the \highlight[id=CE, comment={short-run}]{short-run}. This finding suggests a strong \highlight[id=CE, comment={short-run}]{short-run}
+complementarity between the two policies in reducing domestic violence.
+In contrast with these \highlight[id=CE, comment={short-run}]{short-run} outcomes, we find no differences
+in the incidence of IPV between women in beneficiary and non-beneficiary
+households in the \highlight[id=CE, comment={longer-run}]{longer-run}. In combination with our results regarding
+marital dissolution patterns, the evidence is indicative of the idea
+that marital selection is an important mechanism of overall reductions
+in IPV incidence over time.
+
+Finally, in the appendix we present a simple model of intra-household
+bargaining and conflict to help formalize the mechanisms via which
+both reductions in the cost of divorce and income support programs
+can affect equilibrium levels of marital dissolution and conflict
+within the household. Building on the work of \citet{anderson2015suicide}
+and \citet{brassiolo2016domestic}, our theoretical framework incorporates
+bargaining and conflict with incomplete information, together with
+endogenous divorce decisions, to formalize the effects that these
+two distinct sets of policies can have on the incidence of conflict
+and divorce. The first prediction we draw from the model shows how
+legal reforms, through a reduction in the costs of divorce, increase
+separations. More importantly, the model highlights the specific selection
+mechanisms through which the implemented policies, both CCTs and legal
+reforms, affect the $types$ of couples which remain in union. In
+particular, the model reveals that relationships in which the private
+gains from marriage are lower and the cost of conflict experienced
+by the woman is higher, are more likely to dissolve once these policies
+are introduced. If these characteristics are associated with the occurrence
+of IPV, then these policies can increase the separation rate of relationships
+in which violence is prevalent.
+
+\subsection*{Relevant Literature}
+
+Our paper contributes to the economics and policy literature on intimate
+partner violence in a number of ways. Most importantly, we explore
+the relationship between two separate factors, which have been documented
+to affect IPV, legal frameworks and cash transfers. We highlight that
+exploring the intersection of these mostly separate literatures can
+help us better understand the effects of individual policies, and
+in particular in understanding their long run implications.
+
+A growing body of work has shown that unilateral divorce laws\textemdash{}instituted mainly in the context of developed countries\textemdash{}can help curb various forms of intimate partner violence (\citealt{dee2003until,stevenson2006bargaining,brassiolo2016domestic}).
+However, it is unclear whether the evidence provided by these studies
+is generalizable to developing countries, where differences in both
+socio-economic and health conditions as well as in cultural views
+towards IPV and social norms regarding gender roles (especially those
+that link notions of manhood to dominance and aggression) may limit
+the effectiveness of these legal rules in improving women's status
+and conditions within the household. \citet{GARCIARAMOS2021102623}
+explores the impact of unilateral divorce laws in Mexico and finds
+increased physical, economic and emotional violence in the long-run
+for women who remained married, as well as a positive relationship
+between the adoption of unilateral divorce laws and divorce rates.
+Similarly, both \citet{aguirre2019changes} and \citet{hoehn2021impact}
+find that unilateral divorce laws significantly increased divorce
+rates across Mexico between 2008 and 2017. Our study complements this
+work: it examines a different set of (earlier) legal reforms\textemdash{}instituted in most states in the country\textemdash{}that also enhance
+women's rights by creating a more equitable legal environment for
+marriage and divorce, while exploring how these reforms interacted
+with the Oportunidades CCT program. \citet{beleche2017domestic} studies
+the consequences of these reforms for extreme measures of intrahousehold
+violence, particularly female and male suicide rates,
+and finds no evidence of reductions in these extreme forms of violence
+and conflict resolution. Using aggregate administrative data on divorce
+rates, \citet{beleche2011til} find no overall effect on divorce rates due to this legal
+reform.\footnote{In contrast, we document increased divorce rates in the specific sub-population
+we study (young women in rural settings), detailed below. }
+
+A parallel and significant body of work has studied the effects of
+conditional and unconditional cash transfer (CT) programs on intimate
+partner \highlight[id=CE, comment={insert reference to study here, at end of sentence.}]{violence.} While this body of work finds that some subgroups are at increased risk of some forms of violence, the collective evidence
+supports the view that CTs lead to short-run reductions in IPV \citep{buller2018mixed,baranov2020theoretical,heath2020cash}.
+Few studies document the long-run consequences of the introduction
+of CT programs. \citet{perova2010buying}, \citet{ritter2014te},
+and \citet{diaz2022unconditional} study the consequences of the introduction
+of the Juntos CT program in Peru; all find significant reductions
+in the incidence of physical and sexual violence over a period of
+up to five years following the introduction of the program. \citet{roy2019can,roy2019transfers}
+study whether cash transfer programs lead to persistent reductions
+in IPV once these programs end. They show evidence based on a randomized
+controlled trial in rural Bangladesh that cash or food transfers to
+poor women alone do not lead to sustained reductions in IPV following
+the end of the \protect\highlight[id=CE, comment={clarify author names in footnote as well as in text}]{program.}\hl{\footnote{\hl{They} presented strong evidence that a complementary nutrition behavior-change communication intervention, together with cash transfers in
+particular, led to sustained reductions in IPV four years after the
+end of the program. Their evidence suggests that the combined intervention
+led to more sustained impacts through persistent increases in women\textquoteright s
+bargaining power, men\textquoteright s costs of perpetrating violence,
+and poverty-related emotional well-being.}} Relatedly, \citet{litwin2019conditional} document that transfers
+from the Bolsa Familia program to Brazilian municipalities are associated
+with separations of couples (and especially separations of couples
+with children), highlighting an important mechanism through which
+CTs may reduce \protect\highlight[id=CE, comment={clarify author names in footnote as well as in text}]{IPV.}\hl{\footnote{However, \hl{they} find no relationship between the CT program and female
+homicides (the most extreme form of IPV).}} 
+
+\hl{Although previous literature has mostly highlighted how policy efforts
+affect the behaviour of violent partners, the potential of these to
+reduce IPV by inducing divorce remains a relatively unexplored channel
+through which this objective could be} \highlight[id=CE, comment={these studies - this objective : it is unclear what these and this are referring to here, consider expanding clause for clarity.}]{achieved.} Our findings suggest
+that the short-run causal effect of CTs on IPV, documented by the
+existing literature, may not necessarily persist over time if changes
+in the legal environment affect household formation and dissolution
+patterns in such a way as to independently curb intimate partner violence.
+Ours is the first study to explore the extent to which legal reforms
+and social policies, which may both have independent effects on IPV,
+work as complements or substitutes. The results are consistent with
+the view that policies to promote the improvement of women's livelihoods
+within the household can lead to sizeable reductions in IPV in the
+\highlight[id=CE, comment={short-run / short-term}]{short-run}, but that marital selection can be a significant mechanism
+for explaining such effects in the \highlight[id=CE, comment={longer-run / change to longer run. use hyphen for short-term and no hyphen for short run}]{longer-run}. The evidence we present
+suggests that the policies can be important complements in reducing
+IPV.
+
+\section{Background}
+
+\subsection*{Family Violence Divorce Law Reforms}
+
+In Mexico, the laws regarding marriage, divorce, and family affairs
+are embedded in state civil codes; each of the 32 states has its own
+civil code regulating these proceedings. State civil codes have historically
+stipulated motives such as adultery, and out-of-wedlock births (among
+others) in addition to mutual consent, as grounds for divorce. In
+the late 1990s, states began adopting legal reforms with the objective
+of modernizing civil codes, one of which included adding family violence
+as a cause for divorce. The precise wording of the civil code varies
+across states, but it generally allows partners to unilaterally initiate
+divorce proceedings claiming family violence\textemdash{}the committal
+of violence by one of the partners against the other, their mutual
+children, or the children of one of them\textemdash{}as the cause.
+The specific dates at which these legal reforms were adopted across
+Mexican states are listed in Figure 1 (the source is from the coding carried
+out by \citealp{beleche2017domestic}). The first state to adopt the
+reform was the Federal District (Mexico City) in December 1997.
+By 2003, the majority of states had adopted the legal reform. In that
+year, domestic violence or threats as the cause of divorce accounted
+for about 1.6 percent of all divorces in urban areas, and about 2.2
+percent in rural areas.\footnote{Authors' own calculations based on data from INEGI: http://www.beta.inegi.org.mx/programas/nupcialidad/.}
+
+Figure 2 shows trends in the adoption of family violence reforms
+and divorce rates since 1997, suggesting a relationship between
+the increase in divorce rate and the divorce law reform. In 1997 less
+than 10 percent of the states allowed domestic violence as grounds
+for divorce, but by 2001 this proportion had increased to almost 50
+percent, and to almost 70 percent by the year 2006. Coinciding with
+the passage of divorce legislation, divorce rates also increased.
+In 1993 there were 0.41 divorces per thousand persons. This statistic
+rose to 0.76 divorces per thousand persons in 2005. According to Mexican
+statistical yearbook statistics, in 2001\textendash{}2006 mutual consent accounted
+for over 70 percent of divorces, while separation or abandonment accounted
+for 5\textendash{}10 percent. In addition, while the majority of divorces are
+judicial, there has also been a rise in the number of administrative
+divorce filings over time. Relative to the other causes for divorce,
+the proportion of divorce filings listing domestic violence as the
+cause is slightly over one percent. IPV, however, is a major public
+health concern affecting Mexico. Based on household surveys in 2003,
+approximately 44 percent of women living with a partner reported
+having been a victim of domestic violence (ENDIREH, 2003). When intimate
+partner violence is allowed as grounds for unilateral divorce, an
+abused spouse may threaten to use it against the other in order to
+obtain mutual consent to dissolve the marriage.
+
+\subsection*{Oportunidades Program}
+
+The Mexican government initiated in 1997 a conditional cash transfer
+program named PROGRESA, renamed \textit{Oportunidades} in 2001 under
+the Fox Administration (\hl{and renamed PROSPERA under the Pe$\~n$a Nieto}
+\highlight[id=CE, comment={"renamed PROSPERA in (insert date) under the Pea Nieto administration" ?}]{administration}), aimed at alleviating poverty and improving the human
+development of children in rural Mexico. The program targets the poor
+in marginal communities, where 40 percent of children from poor
+households drop out of school after the primary level. The program
+has expanded considerably since its inception and has become an integral
+component of Mexico's social development and poverty reduction efforts.
+As of 2013, Oportunidades provided cash transfers to 6.5 million families,
+conditional on children school attendance, health checks, and participation
+in health clinics.
+
+The targeting of the program was done at two levels. First, eligible
+localities were identified on the basis of a locality-level eligibility
+rule. Program officials used locality-level characteristics from the
+Mexican 1995 Mini-Census of Population to construct a marginality
+index for each locality that reflected its degree of marginalization
+and was correlated with the community's incidence of poverty.\footnote{The variables used to construct this marginality index were: (i) the
+locality's population, (ii) the number of dwellings in the village,
+(iii) the proportion of the adult population who was illiterate, (iv)
+the proportion of adults working in the agricultural sector (in 1990),
+the proportion of households (v) without potable water, (vi) without
+drainage, (vii) without electricity, (viii) with a dirt floor (in
+1990), and (ix) the average number of persons per room in each household
+(in 1990).} Second, program enumerators conducted household surveys within eligible
+localities to identify households that would be classified as poor.
+Based on asset holdings used as proxy variables for poverty, the program
+administrators generated a proxy-means \highlight[id=CE, comment={In footnote 8, change to "of poor and" or "classification as poor and non-poor" ?}]{test.}\hl{\footnote{Within a sub-sample of communities, a poverty indicator was constructed
+using household income data collected from baseline surveys. A discriminant
+analysis was then separately applied in each region in order to identify
+the household characteristics that maximized the correct classification
+\hl{of as poor} and non-poor (minimizing Type I and Type II targeting errors).
+Eligible households were identified on the basis of this welfare index
+(see \citealt{skoufias2001targeting} for a more detailed description
+of the targeting process).}} Therefore, within each eligible community, only households below
+a threshold became program beneficiaries. The list of potential beneficiaries
+was then discussed in a community meeting and suggested revisions subsequently were
+sent to the central Oportunidades office. In practice, very few changes
+were made to the list of targeted households \citep{skoufias2001targeting}.
+This targeting and program eligibility information is an important factor in
+the construction of our sample of eligible women (see Sections IIII
+and IV.B).
+
+Initially, a locality was eligible for Oportunidades if it was classified
+as \textquotedbl poor\textquotedbl{} (marginality grade 4) or \textquotedbl very
+poor\textquotedbl{} (marginality grade 5) out of a 1\textendash{}5 scale based
+on the locality-level marginality index, and if it had access to a
+primary school, a secondary school, a health center, and was classified
+as rural (defined as inhabited by fewer than 2,500 people), but had
+at least 50 inhabitants \citep{skoufias2001targeting}. The last criterion
+was relaxed early on to incorporate some semi-urban localities (localities
+with between 2,500 and 14,999 inhabitants). The health center criterion
+was relaxed in 1998 when mobile health clinics were introduced. Since
+then, the inclusion of less marginal localities into the program has
+been gradually extended. Between 2000 and 2011, the program's coverage
+expanded from around 53,000 localities and 2.5 million families, to
+97,000 localities and 5.8 million families. The program was phased-in
+through a different targeting design in urban areas starting in 2001.
+Since this targeting mechanism is very complex and substantially different
+to the one implemented in rural and semi-urban areas, and in order
+to maintain a sample comparable to that of the short-run study, we
+focus our analysis on rural households. We present additional information
+on the Oportunidades program in the appendix.
+
+\section{Data, Measurement, and Summary Statistics}
+
+\subsection*{Description of the ENDIREH Surveys and Study Samples}
+
+We use data from Mexico's National Surveys on Relationships within
+the Household (\textquotedbl Encuesta Nacional sobre la Dinámica
+de las Relaciones en los Hogares\textquotedbl, or ENDIREH) of 2003,
+2006 and 2011. These are \hl{three nationally representative cross-sectional household }\highlight[id=CE, comment={note my change here..}]{surveys} measuring the prevalence and intensity of intimate
+partner violence, among other intra-household interactions. They contain
+data on household demographics, socio-economic characteristics, (limited)
+marital histories, household decision-making, marital conflict, and
+a module designed to measure the prevalence and severity of intimate
+partner violence. The 2003 survey was administered to 54,230 women
+15 years or older living with a husband or partner, whereas the 2006
+and 2011 surveys were administered respectively to 113,561 and 152,636
+women in the same age range but independent of marital status.
+
+We construct measures of the incidence of violence that consist of dichotomous
+variables indicating whether the female partner had suffered physical
+or sexual violence from her spouse or partner in the past 12 months.\footnote{These definitions follow closely the documentation and results of
+the survey in \citet{castro2006violencia}. A previous version of
+this paper also included emotional abuse as an outcome, but analogously
+with the results for physical and sexual violence, we see no differences
+in the incidence of emotional violence between beneficiary and nonbeneficiary
+women in the 2006 and 2011 surveys. These results are available upon
+request.} Physical violence includes pushing, kicking, throwing objects, hitting
+with hands or objects, choking, attacking with a knife or blade, and
+shooting. Sexual violence includes demanding sex against the woman's
+will, forced sexual acts, and forced sexual relations. A single incident
+reported within the past year is classified as violence.
+
+Data on program participation come from the ENDIREH surveys and are
+self-reported by women. The measure of program participation available
+in the ENDIREH 2003 is based upon whether the woman receives benefits from any
+government support program at the time of the survey. Although Oportunidades
+is the largest and most generous cash transfer program, there are
+other small government programs that provide non-cash benefits. As
+a result, this measure may over-report the receipt of Oportunidades
+benefits. However, although there is some noise in the data (since
+only ten households per village are randomly selected to participate
+in the survey) the correlation of the proportion of beneficiary households
+using the ENDIREH survey data with administrative data on the number
+of recipient households at the locality level in 2003 is 0.84 (not
+reported in the tables), which suggests that the information from
+the household survey closely represents receipt of Oportunidades benefits.
+In addition, since program receipt is measured at the time of the
+survey, it combines couples who have received the transfer for varying
+lengths of time (which we unfortunately do not observe) and our results
+should be interpreted with this in mind.
+
+The ENDIREH 2006 and 2011 surveys ask women specifically whether they
+receive benefits from Oportunidades, and separately whether they are
+beneficiaries of other government support programs. In order for the
+analysis to be comparable to that using data from the ENDIREH 2003
+survey, the measure we use is the analogous measure of being a beneficiary
+from any government support program (i.e., Oportunidades or other).
+In the samples for the ENDIREH 2006 and 2011 selected for our analysis,
+only between 1.6 and 3.0 percent of those who report being beneficiaries
+of any government support program, report not being beneficiaries
+of Oportunidades. These reliability checks suggest that the information
+from the household survey closely represents receipt of Oportunidades
+benefits.\footnote{We also estimate models using the ENDIREH 2006 and 2011 data with
+the Oportunidades beneficiary indicator as the explanatory/treatment
+variable of interest. The results do not differ in any significant
+way from those reported in the tables. These are available from the
+authors upon request.}
+
+In order to minimize potential selection bias as a result of the
+targeting and endogenous take-up of the program, we restrict the analysis
+of the short-term relationship in 2003 to a particular subset of households
+as in \citet{bobonis2013public}. The 2003 sample includes couples
+with women 25 years or older, with children younger than 11 years
+old, and who have been married since at least 1997. These restrictions
+result in a sample of 2,613 couples. For our analysis in subsequent
+years, we first construct a \textit{pseudo-panel} of comparable households.
+We restrict the 2006 (2011) survey sample to couples with women 28
+(33) years or older with children between the ages of 3 and 13 (8
+and 18) years, who have been together since 1997. The resulting overall
+sample sizes for the pseudo-panel are 4,240 in the 2006 survey and
+5,208 couples in the 2011 survey. As we will discuss below, these
+sample restrictions minimize potential confounding due to the endogenous
+take-up of the program based on household socio-economic characteristics
+and preferences for human capital investments (see Section 4).
+
+In an alternative and complementary exercise, we construct a \textit{replication
+sample }for the subsequent surveys that consists of women with the
+same characteristics at the time of the survey, that is: women 25
+years or older, with children younger than 11 years old, who have
+been in a relationship for at least six years (this last restriction
+is analogous to women being married since 1997 for the 2003 sample).
+Note that while the pseudo-panel approach tries to maximize the overlap
+of women across the samples, this alternative approach will include
+many new women and will exclude others that no longer meet the selection
+criteria (for instance, if the children are now out of primary school).
+The resulting sample sizes for the replication sample are 4,318 for
+the 2006 survey and 5,931 for the 2011 survey.
+
+It is worth highlighting that each of these samples suffer from specific
+limitations. In particular, the relationship between receipt of the
+CCT and IPV estimated using the pseudo-panel conflates the policy
+impacts with cohort effects and the time path of divorce, while that
+obtained using the replication sample conflates the policy impacts
+with changes in eligibility and the expansion of the program. However,
+as we discuss below, the descriptive patterns we observe are very
+similar in both subsamples.
+
+Finally, to analyze the effect of the IPV divorce law reforms on the
+divorce rate in our sample, we use the 2011 ENDIREH survey and construct
+a \textit{state-level panel}. We start with the 2011 pseudo-panel,
+the sample of women who remain in union in 2011 and who match our
+sample restrictions (5,208 women), and pool it with the sample of
+women who divorced between 1998 and 2011 but who share the same restricted
+characteristics as the initial sample (in 2003 these women were 25
+years or older and had children younger than 11, consisting of 472
+women). The pooled sample has 5,680 observations. We use data on the
+years of divorce in the pooled sample to estimate a divorce-rate for
+each state-year cell. We do this for the overall sample, as well as
+separately for both beneficiaries and non-beneficiaries of Oportunidades
+(at the time of the survey). The divorce-rate panel consists of 448
+observation cells (32 states x 14 years).
+
+\subsection*{Descriptive Statistics}
+
+\textcolor{black}{Spousal violence remains a pervasive phenomenon
+in rural Mexico, but one that has decreased considerably throughout
+the period (Table 1). Whereas 16.5 percent of women in the sample
+reported experiencing some form of physical or sexual spousal violence
+in the year 2003, the incidence had decreased to 14 percent by the
+year 2006 and to 10.4 percent by 2011, in the pseudo-panel sample.
+The reductions are even larger for the younger cohorts; in the replication
+sample the incidence was 13.5 and 8.8 percent for 2006 and 2011, respectively.
+The patterns in our selected sample are slightly more pronounced but
+generally consistent with overall trends in Mexico.}\footnote{According to estimates based on the ENDIREH 2003-2011 survey rounds,
+the overall incidence of physical violence among women was estimated
+at 9.3 percent in the year 2003, increased slightly to 10.3 percent
+in the year 2006, but decreased substantially to 4.4 percent in the
+year 2011. The overall incidence of sexual violence has decreased
+consistently across rounds\textemdash{}from 7.8 percent in the year
+2003 to 6.0 and 2.8 percent respectively in the years 2006 and 2011
+\citep[193]{casique2014expresiones}.}\textcolor{black}{{} }
+
+\textcolor{black}{Households in the sample are of relatively low socio-economic
+status. More importantly, we observe some stark differences in a number
+of dimensions of socio-economic status as we compare the samples of
+couples across survey years. A significant share of women report speaking
+an indigenous language (14 percent in 2003, 17/16 percent in 2006,
+and 21/19 percent in 2011, for the pseudo-panel/replication sample);
+this ethnic identity is highly correlated with low socio-economic
+status in Mexico (Table 2, Panel A). In addition, approximately nine
+percent of women in 2003 have no schooling, and this figure increases
+to 15 percent among the pseudo-panel couples selected in 2011. The
+average age of women in the sample is 35.4 years in 2003, 38/35.2
+years in 2006, and 43/35.1 years in 2011. The trend in age for the
+pseudo-panel is explained by the age restrictions imposed on the samples
+and is consistent with our attempt of following the same set of women
+over time. Male partners belong to the same age group (the average
+partner age is 38.4 years in 2003, 46.5/38.7 years in 2011), have
+similar schooling attainment levels, and are as likely to have an
+indigenous background (Table 2, Panel B). Households are relatively
+large, with more than 5 members on average, a statistic usually correlated
+with low socioeconomic status in the Mexican context.}
+
+\textcolor{black}{The proportion of women who report having been exposed
+to intra-household violence between their parents during childhood
+is quite high, at approximately nine percent in 2003, 11/10 percent in
+2006, and 13/11 percent in 2011 (Panel A). Given the existing concerns
+and evidence regarding the intergenerational transmission of violent
+behavior, this suggests that women in this context may be at a particularly
+high risk of experiencing spousal violence, helping explain the prevalence
+of violence reported above. The proportion of women reporting that
+their male partners were exposed to spousal violence between their
+parents during childhood is also significant, but decreases, from
+18 percent in 2003, to 13/12 percent in 2006, and to 12/10 percent
+in 2011. These are also important predictors of spousal abuse among
+current partners (e.g., \citealt{bowlus2006domestic,casique2014expresiones}).}
+
+\section{Empirical Methodology}
+
+\subsubsection*{Relationship between Divorce Laws and Divorce Rates}
+
+To study the relationship between the introduction of the IPV divorce
+laws and the incidence of divorce we exploit the differential timing
+at which these reforms were introduced across Mexican states in a
+difference-in-differences framework. We use data on marital and family
+histories from the last wave of the ENDIREH survey (2011) to identify
+all women who matched our pseudo-panel characteristics (older than
+25 and with young children in 2003, in union in 1997). With this information
+we construct a state-year panel of divorce rates as described in Section
+3. We then estimate regressions of the following form:
+
+\begin{equation}
+Y_{st}=\alpha+\theta PostDL_{st}+\gamma_{s}+\gamma_{t}+\varepsilon_{st}
+\end{equation}
+
+where $Y_{st}$ is the divorce rate in state $s$ and year $t$, and
+$PostDL_{st}$ is an indicator equal to 1 if the divorce law had been
+introduced in state $s$ by year $t$. Our preferred specification
+includes state fixed effects $\gamma_{s}$ to control for time-invariant
+heterogeneity across states and year fixed effects $\gamma_{t}$ to
+control for time-shocks shared by all states. In some specifications
+we also include linear state time trends.
+
+In addition, we use variation across states on whether the reform
+had been introduced in 2003 (year of the first survey wave) to investigate
+whether the introduction of these reforms led to differential divorce
+rates depending on respondent characteristics: violence in woman's
+childhood, violence in marriage, and Oportunidades beneficiary status.
+The baseline regression equation is the following:
+
+\begin{equation}
+Y_{is}=\alpha+\theta_{0}DL2003_{s}+\theta_{1}DL2003_{s}*V_{i}+\theta_{2}V_{i}+X_{is}\beta+\varepsilon_{is}
+\end{equation}
+
+where $Y_{is}$ is and indicator equal to 1 if individual $i$ from
+state $s$ was divorced in the measured year (2003, 2006, or 2011);
+$DL2003_{s}$ is equal to one if the IPV divorce law had been introduced
+by 2003 in state $s$, $V_{i}$ is the covariate of interest, $X_{is}$
+are the pre-determined covariates, and $\varepsilon_{is}$ are unobserved
+determinants of divorce. Regressions are weighted by inverse sampling
+weights aggregated at the state level. We cluster standard errors
+at the state level.
+
+\subsubsection*{Relationship between Divorce Laws and Intimate Partner Violence}
+
+To investigate the relationship between spousal abuse and IPV divorce
+laws, we estimate models analogous to those from equation (2) but
+with IPV as our dependent variable. In addition, we estimate a similar
+model which includes village fixed-effects that absorb time-invariant
+characteristics at the village level. Because the village fixed effects
+are linearly dependent with the IPV divorce law indicator, in this
+case we can only identify the differential relationship between the
+reforms with IPV depending on women's characteristics. Specifically,
+we estimate the following equation:
+
+\begin{equation}
+Y_{isv}=\theta_{1}DL2003_{s}*V_{i}+\theta_{2}V_{i}+\alpha_{v}+X_{isv}\beta+\varepsilon_{isv}
+\end{equation}
+
+where $Y_{isv}$ is and indicator equal to 1 if individual $i$ from
+village $v$ in state $s$ was a victim of physical or sexual violence;
+$DL2003_{s}$ is equal to one if the IPV divorce law had been introduced
+by 2003 in state $s$; $V_{i}$ is the covariate of interest, $\alpha_{v}$
+are village fixed effects, $X_{isv}$ is the vector of pre-determined
+covariates, and $\varepsilon_{isv}$ are unobserved determinants of
+divorce. We do the analysis for each of the 2003 sample, and the pseudo-panel
+and replication samples for 2006 and 2011. We cluster standard errors
+at the state level.
+
+\subsubsection*{Relationship between Oportunidades Beneficiary Status and Intimate
+Partner Violence}
+
+To obtain estimates of the relationship between Oportunidades beneficiary
+status and the incidence of spousal abuse, we follow the analysis
+in \citet{bobonis2013public} and use ordinary least squares models
+conditioning on a large set of pre-determined individual and household
+socio-economic characteristics, as well as locality/village fixed
+effects, in order to capture any village-specific unobserved heterogeneity
+influencing spousal abuse patterns (e.g., access to health clinics,
+community groups, village-level conditions affecting partners' socio-economic
+conditions and economic opportunities). The regression equation for
+outcome $Y_{iv}$ is the following: 
+\begin{equation}
+Y_{iv}=\theta T_{iv}+X_{iv}\beta+\alpha_{v}+\varepsilon_{iv}
+\end{equation}
+where the treatment indicator $T_{iv}$ equals one for beneficiary
+household $i$ in village $v$ and is zero otherwise; $X_{iv}$ are
+the pre-determined covariates that are possibly significantly correlated
+with $T_{iv}$ and $Y_{iv}$; $\alpha_{v}$ are village fixed effects,
+and $\varepsilon_{iv}$ are unobserved determinants of domestic violence.
+Since $T_{iv}$ is measured at the time of the survey, our estimates
+combine possible short-term relationships, among couples receiving
+program benefits for short periods, and those that have been receiving
+program benefits for longer. We cluster standard errors at the village
+level.
+
+\subsubsection*{Dealing with Endogenous Selection into the Oportunidades Treatment}
+
+We conduct the analysis using various strategies to minimize the extent
+of selection bias in our estimates. First, as mentioned in \highlight[id=CE, comment={Section 3}]{Section
+III}, our pseudo-panel uses a sub-sample of households with children
+ages between 0 and 10 in 2003 (ages between 3 and 13 in 2006, and
+ages 8 and 18 in 2011) and who have been in union since 1997. Second,
+we condition on a set of pre-determined individual and household socio-economic
+characteristics which are strongly correlated with determinants of
+program eligibility and likely capture a large component of the variation
+determining program take-up, thus minimizing concerns of endogenous
+program take-up. In addition, we restrict the sample to women ages
+25 and older in 2003 (28 and older in 2006, 33 and older in 2011).
+Most importantly, to address the endogenous targeting of the program
+to poor communities, we make comparisons of beneficiary and non-beneficiary
+households within villages in order to remove all selection based
+on the village-level targeting of the program. This within-village
+comparison dramatically reduces the observed selection into the program
+\citep{bobonis2013public}. In the appendix we discuss the potential
+concerns of unobserved heterogeneity for the within-village household
+comparison.
+
+\section{Results}
+
+\subsection*{Relationship between Family Violence Divorce Laws and Divorce Rates}
+
+We begin our analysis by looking at the relationship between the legal
+reforms instituted across Mexican states and divorce rates. The results
+from estimating equation (1) are presented in Table 3. We present
+estimates for the overall sample, as well as for specific subsamples
+of women. Our preferred estimate includes both state linear time trends
+and other legal reforms related to domestic violence which were instituted
+around the same time.\footnote{These include criminalization of domestic violence and the establishment
+of prevention and assistance programs for victims of domestic violence.
+These policies are documented and studied in \citet{beleche2017domestic}.} The analysis suggests that legal reforms led to a statistically significant
+increase in divorce rates across adopting states. The average annual
+divorce rate in our sample is 0.64 per 100 couples. The estimated
+coefficient suggests an increase of 0.37 divorces (column 2), or about
+60 percent. Women who are beneficiaries of Oportunidades have slightly
+lower divorce rates (0.59 per 100 couples), but experience a 0.49
+rate increase following the reforms. Women who report violence in
+their marriage have significantly higher divorce rates on average,
+2.48 for 100 couples per year. We also estimate larger increases in
+the divorce rates following the institution of the legal reform: a
+1.39 divorce rate increase (significant at the 90 percent level),
+a 56 percent increase in proportional terms.
+
+In a complementary exercise we present estimates from an event-study
+design in which we allow the coefficients to vary flexibly relative
+to the timing of the reforms. We present these estimates in Figure
+3, including an analysis in which we estimate divorce rates separately
+for beneficiary and non-beneficiary women. The estimates reveal a
+pattern consistent with those immediately above and of which suggest that the effects of
+the legal reform on divorce was concentrated on beneficiary women.
+
+\hl{The second part of our analysis presents estimates from the regression
+model outlined in equation (2). This analysis using individual data exploits one particular threshold regarding the timing of the
+legal reforms, as we compare states that had, by 2003 instituted the
+divorce law reforms, relative to those which }\highlight[id=CE, comment={please note my changes here.}]{had not.} The advantage
+of this framework is that it allows us to include our control variables
+in the estimating equation. The results are presented in Table 4.
+Women in states that had instituted the reforms by 2003 were more
+likely to be divorced by 2006 (column 2, statistically significant
+at the 90 percent level) and by 2011 (column 6, not statistically
+significant), by about 1.3 percentage points. Interacting the presence
+of the reform with the characteristics of these women suggests that the
+relationship between the legal reform and the propensity to divorce
+is heterogeneous across different subgroups of women. In particular,
+women who experienced violence in their households as children (columns
+3 and 7), women who experience violence in their marriage (columns
+4 and 8), and women who are beneficiaries of Oportunidades (columns
+5 and 9), are more likely to be divorced in legal reform states by
+2006 and by 2011, relative to their converse groups in non-reform
+states. The results from this complementary analysis confirm the findings
+from state-panel regressions.
+
+\subsection*{Relationship between Divorce Laws and Intimate Partner Violence}
+
+The results from this analysis are presented in Table 5. Columns 1,
+4, and 7 evaluate whether women who lived in states that had passed
+the legal reforms by 2003 experienced spousal violence at different
+rates relative to women in non-reform states. We find no significant
+relationship between IPV divorce laws and spousal violence in this
+cross-sectional analysis. This suggests that the reforms themselves
+did not substantially change IPV rates and/or that states with higher
+rates of IPV were not necessarily the first ones to pass these reforms.
+
+We next test whether the relationship between IPV divorce laws and
+spousal violence is heterogeneous depending on whether women experienced
+violence in their homes as children. In 2003, women who were in reform
+states and who had experienced violence as children were between 14
+and 17 percentage points more likely to be victims of spousal abuse
+(columns 2 and 3) relative to women who had not experienced violence
+as children. We also observe that the relationship between violence
+in childhood and domestic violence appears significant in the 2006
+and 2011 samples but is not restricted to reform states.
+
+\subsection*{Relationship Between Oportunidades Beneficiary Status and Intimate
+Partner Violence}
+
+We start the presentation of the relationship between Oportunidades
+and IPV with a graphical analysis of patterns in the data. Figure
+4 shows the trends in physical violence among couples across the three
+survey years. The incidence of physical abuse among women in non-beneficiary
+households is high at almost 13 percent in 2003, and presents a
+downward trend over time to around 10 percent in 2006, and to around
+7 percent in 2011 (significant at the 90 percent confidence level).
+In comparison, the incidence among beneficiary couples is around 9
+percent, lower than that among non-beneficiary couples in 2003 (4
+percentage points, not significant). However, the incidence among
+beneficiary couples hovers around 10.0 percent in 2006 and 7 percent
+in 2011, such that physical violence rates among these two groups
+of households converge in the longer-run. We observe a similar, although
+less stark, pattern of short-run differences (in 2003) and later convergence
+(in 2006 and 2011) in the incidence of sexual violence.
+
+\textcolor{black}{Estimates of the overall five-year (2003), eight-year
+(2006), and thirteen-year (2011) relationship between program beneficiary
+status and spousal violence outcomes are displayed in Table 6. For the
+purposes of comparison, we start the discussion with our preferred
+estimates of the short-run relationship. As documented in \citet{bobonis2013public},
+domestic violence incidence rates in the short-run are significantly
+lower among beneficiary couples than among non-beneficiary couples (column
+1), the estimated difference in the incidence of physical or sexual
+abuse being 12.5 percentage points (75 percent).} \textcolor{black}{We
+then investigate whether this relationship is heterogeneous between
+states which had instituted the IPV divorce laws by 2003 and those
+that had not (column 2). Although we do not have the precision to
+detect a differential relationship (the interaction term between Oportunidades
+beneficiary and IPV divorce law states is large but not statistically
+significant), the overall relationship in IPV law states is statistically
+significant and large, suggesting that women in reform states who
+were beneficiaries of Oportunidades were 18.5 percentage points less
+likely to be victims of physical or sexual abuse relative to non-beneficiary
+women in reform states. The analysis suggests that there is a strong
+short-run complementarity between the Oportunidades program and the
+legal reform in terms of reductions of IPV, and that the short-run
+reductions in domestic violence previously documented were concentrated
+in these reform states.}
+
+\textcolor{black}{In contrast to the short-run relationship, domestic
+violence incidence rates do not vary significantly between beneficiary
+and non-beneficiary households in 2006 and 2011 (columns 3\textendash{}6). Our
+preferred estimate for 2011 shows a statistically insignificant difference
+in the incidence of physical and sexual violence of 1 percentage point
+(column 5).}\footnote{\textcolor{black}{We also find no evidence of a significant difference
+in the incidence of violent threats or acts of emotional violence
+among beneficiary women, a finding documented in a previous version
+of this article \citep{bobonis2015conditionalc}.}}\textcolor{black}{{} The heterogeneity analysis for 2006 suggests that
+beneficiary women in reform states were 4.1 percentage points }\textit{\textcolor{black}{more}}\textcolor{black}{{}
+likely to be victims of physical or sexual abuse relative to non-beneficiaries
+in non-reform states (column 4). The finding could be partially explained
+by a combination of the strong selection mechanism combined with a
+``male backlash'' effect. This relationship is, however, not present
+in neither the replication sample for 2006 (Panel B), or either of
+the 2011 samples (column 6). The interaction coefficient for 2011,
+though statistically insignificant, is, as in 2003, negative. In some
+of the specifications which include additional control variables,
+this coefficient becomes statistically significant (shown in Table
+8 and discussed in the appendix), suggesting that to some extent,
+this complementarity between IPV divorce laws and the CCT program
+persists through to 2011.}
+
+\subsection*{Discussion, Repeated Interactions and Marital Selection}
+
+\textcolor{black}{The stark differences in the longitudinal pattern
+of the relationship suggests that the models of violence and household
+bargaining, in which male partners may use violence as instruments
+of coercion \citep[see][]{bloch2002terror,bobonis2013public,anderson2015suicide}
+may correctly capture short-run interactions within the household
+but may do so poorly in the longer-run. In this class of models male
+partners are heterogeneous in their willingness to engage in violence
+and have private information regarding the ``gains to
+marriage'', such as their own private income or their
+status within the household based on traditional gender roles. However,
+once this information has been revealed through partners' actions,
+couples with violent types may dissolve such that couples in future
+periods are disproportionately composed of non-violent types. This
+selection patterns can lead to both a tendency for violence rates
+to decrease among couples remaining in union over time and for their
+relationship with program receipt status to be dampened.}
+
+\textcolor{black}{The evidence we present is consistent with this
+interpretation. First, we have documented that the short-run relationship
+with Oportunidades receipt is concentrated in reform states. We have
+also shown that women in reform states experienced an increase in
+marital dissolution rates over this time period. Furthermore, the
+increase in marital dissolution rates was larger for beneficiary women
+and women who experienced violence in their marriage. This increase
+in divorce-based selection can help explain both the drop in the incidence
+of violence among these cohorts of women and the absence of a relationship
+between the Oportunidades program and the incidence of IPV in the
+subsequent surveys. }In the appendix we present a formal model of
+spousal relations that highlights the mechanisms through which legal
+reforms and conditional cash transfers affect divorce and conflict
+within the household, and reveals how different types of couples remain
+in union when the policies are implemented.
+
+\textcolor{black}{Second, a comparison of socio-economic and demographic
+characteristics of households across the three survey waves suggests
+that there are important changes in their distributions (see Table
+2). Women are more likely to report speaking an indigenous language
+in the later survey waves (which is correlated with low socio-economic
+status in Mexico), they tend to have lower educational attainment
+levels, and report a higher prevalence of violence in their households
+during childhood. Moreover, their male partners are more likely to
+be indigenous themselves. However, they report a lower prevalence
+of violence in their male partners' households during childhood -
+decreasing from 18 percent in 2003 to around 12 percent in 2006 and
+2011. Given the strong correlation in the intergenerational transmission
+of violent behavior, the decrease in this statistic may be informative
+of the substantial drop in the incidence of violence observed in the
+sample across survey waves. The differences in the distribution of
+these pre-determined characteristics across waves reveal significant
+changes in sample composition, and most importantly, on the types
+of couples which remain in union.}\footnote{\textcolor{black}{See \citet{casique2014expresiones} for a rich analysis
+of changes in household socio-economic characteristics and patterns
+of intimate partner violence across the three survey waves.}}\textcolor{red}{{} }\textcolor{black}{Finally, levels of violence among
+couples in the replication sample tend to be lower than those in the
+pseudo-panel, consistent with the view that abuse in new couples may
+be lower. To the extent that changes in the composition of beneficiary
+households is driven by these marital selection dynamics, these sample
+selection and treatment effect heterogeneity patterns help explain
+the time path of spousal violence among beneficiary couples.}
+
+\subsubsection*{\textcolor{black}{Alternative Explanations }}
+
+\textcolor{black}{In the appendix, we evaluate and discuss other explanations
+potentially consistent with the evidence: increasing rejection of
+intimate partner violence, localized spillover effects among non-beneficiary
+couples, changes in the de facto conditionality of the cash transfer
+program, and generalized social violence mediating effects on spousal
+abuse, among others.}
+
+\section{Conclusion}
+
+\label{sec:conc}
+
+Our paper provides evidence of the relationship between the Oportunidades
+CCT program, legal reforms codifying intimate partner violence as
+legal grounds for unilateral divorce, and the prevalence of male-to-female
+spousal violence in rural Mexico. More broadly, our paper contributes
+to the debate on how the effects of cash transfer programs on IPV
+are mediated by their local context, an understudied aspect of empirical
+studies in the literature \citep{baranov2020theoretical}. Our findings
+are consistent with the legal reforms both effectively increasing
+women's threat points in a household bargaining framework, therefore
+increasing the effectiveness of cash transfer policies in the short-run,
+but perhaps most importantly, also enhancing the extent to which marital
+selection shapes outcomes in the longer-run. In stark contrast to
+the short-run relationships documented in \citet{bobonis2013public},
+we find that, in the longer-run, women in beneficiary households are
+as likely to experience physical and sexual abuse as non-beneficiary
+women. We also document how the concurrent legal reforms that eased
+women's ability to exit relationships led to higher divorce rates,
+in particular for women who experienced violence in their marriage
+and for women who were beneficiaries of the Oportunidades program.
+
+Together, the results suggest that the policies reinforced each others'
+capacity to reduce IPV. As further evidence of these policy complementarities,
+our analysis revealed that the short-run negative relationship between
+the CCT and IPV first documented in \citet{bobonis2013public} was
+mostly concentrated in states that were early adopters of the legal
+reforms. These complementarities appear to arise through changes in
+behaviour in the short-run, but through marital selection in the longer
+term. Our findings highlight that Oportunidades no longer appearing
+to protect women against violence in the longer-run can thus be explained
+by these violent relationships dissolving over time. We conclude that
+the absence of a relationship between Oportunidades and IPV in
+more recent surveys should therefore be viewed as a success rather
+than as a failing of the policies. Finally, though our work is descriptive
+by design and we cannot uncover the true causal impact of the interventions,
+future work studying the relationship between cash transfers and IPV
+should take into account the relevant legal environment, and the potential
+for marital selection, when evaluating the long-run effects of these
+programs.
+
+\clearpage{}
+
+%\bibliographystyle{aea}
+%\bibliographystyle{aea}
+%\bibliography{bcm_bib}
+% Bibstyle aea.bst version 2009.05.20
+
+
+% Bibstyle aea.bst version 2009.05.20
+
+\begin{thebibliography}{xx}
+
+\let\textbf\textrm
+
+\harvarditem[Aguirre]{Edith Aguirre}{2019}{aguirre2019changes}
+\textbf{Aguirre, Edith.} ``Do Changes in Divorce Legislation Have an Impact on
+  Divorce Rates? The Case of Unilateral Divorce in Mexico.'' \emph{Latin
+  American Economic Review} 28, no.~1 (2019):~9.
+
+\harvarditem[Aizer]{Anna Aizer}{2010}{aizer2010gender}
+\textbf{Aizer, Anna.} ``The Gender Wage Gap and Domestic Violence.''
+  \emph{American Economic Review} 100, no.~4 (2010):~1847.
+
+\harvarditem[Altonji, Elder and Taber]{Joseph~G Altonji, Todd~E Elder and
+  Christopher~R Taber}{2005}{altonji2005selection}
+\textbf{Altonji, Joseph~G, Todd~E Elder, {\rm and} Christopher~R Taber.}
+  ``Selection on Observed and Unobserved Variables: Assessing the Effectiveness
+  of Catholic Schools.'' \emph{Journal of Political Economy} 113, no.~1
+  (2005):~151--184.
+
+\harvarditem[Amaral, Bhalotra and Nishith]{Sofia Amaral, Sonia Bhalotra and
+  Prakash Nishith}{2019}{amaral2019gender}
+\textbf{Amaral, Sofia, Sonia Bhalotra, {\rm and} Prakash Nishith.} ``Gender,
+  Crime and Punishment: Evidence from Women Police Stations in India.''
+  \emph{Working Paper, University of Essex}  (2019).
+
+\harvarditem[Anderberg et~al.]{Dan Anderberg, Helmut Rainer, Jonathan Wadsworth
+  and Tanya Wilson}{2016}{anderberg2016unemployment}
+\textbf{Anderberg, Dan, Helmut Rainer, Jonathan Wadsworth, {\rm and} Tanya
+  Wilson.} ``Unemployment and Domestic Violence: Theory and Evidence.''
+  \emph{The Economic Journal} 126, no.~597 (2016):~1947--1979.
+
+\harvarditem[Anderson]{Siwan Anderson}{2018}{anderson2018legal}
+\textbf{Anderson, Siwan.} ``Legal Origins and Female HIV.'' \emph{American
+  Economic Review} 108, no.~6 (2018):~1407--39.
+
+\harvarditem[Anderson and Genicot]{Siwan Anderson and Garance
+  Genicot}{2015}{anderson2015suicide}
+\textbf{Anderson, Siwan, {\rm and} Garance Genicot.} ``Suicide and Property
+  Rights in India.'' \emph{Journal of Development Economics} 114
+  (2015):~64--78.
+
+\harvarditem[Angelucci and De~Giorgi]{Manuela Angelucci and Giacomo
+  De~Giorgi}{2009}{angelucci2009indirect}
+\textbf{Angelucci, Manuela, {\rm and} Giacomo De~Giorgi.} ``Indirect Effects of
+  an Aid Program: How Do Cash Transfers Affect Ineligibles' Consumption?''
+  \emph{American Economic Review} 99, no.~1 (2009):~486--508.
+
+\harvarditem[Astorga and Shirk]{Luis Astorga and David~A
+  Shirk}{2010}{astorga2010drug}
+\textbf{Astorga, Luis, {\rm and} David~A Shirk.} ``Drug Trafficking
+  Organizations and Counter-drug Strategies in the Us-Mexican Context.''
+  \emph{Center for US-Mexican Studies Working Paper}  (2010).
+
+\harvarditem[Avitabile]{Ciro Avitabile}{2012}{avitabile2012spillover}
+\textbf{Avitabile, Ciro.} ``Spillover Effects in Healthcare Programs: Evidence
+  on Social Norms and Information Sharing.'' \emph{Inter-American Development
+  Bank Working Paper}  (2012).
+
+\harvarditem[Baranov et~al.]{Victoria Baranov, Lisa Cameron, Diana
+  Contreras~Suarez and Claire Thibout}{2020}{baranov2020theoretical}
+\textbf{Baranov, Victoria, Lisa Cameron, Diana Contreras~Suarez, {\rm and}
+  Claire Thibout.} ``Theoretical Underpinnings and Meta-analysis of the Effects
+  of Cash Transfers on Intimate Partner Violence in Low-and Middle-Income
+  Countries.'' \emph{The Journal of Development Studies}  (2020):~1--25.
+
+\harvarditem[Beleche]{Trinidad Beleche}{2017}{beleche2017domestic}
+\textbf{Beleche, Trinidad.} ``Domestic Violence Laws and Suicide in Mexico.''
+  \emph{Review of Economics of the Household}  (2017):~1--20.
+
+\harvarditem[Beleche and Lew]{Trinidad Beleche and Nellie
+  Lew}{2011}{beleche2011til}
+\textbf{Beleche, Trinidad, {\rm and} Nellie Lew.} ``Til Laws Do Us Part? The
+  Impact of Changing Divorce Laws on Divorce Rates in Mexico.'' \emph{U.S. Food
+  and Drug Administration, March. Unpublished Manuscript.}  (2011).
+
+\harvarditem[BenYishay and Pearlman]{Ariel BenYishay and Sarah
+  Pearlman}{2013}{benyishay2013homicide}
+\textbf{BenYishay, Ariel, {\rm and} Sarah Pearlman.} ``Homicide and Work: The
+  Impact of Mexico's Drug War on Labor Market Participation.''
+  \emph{Unpublished manuscript, Vassar College}  (2013).
+
+\harvarditem[Bloch and Rao]{Francis Bloch and Vijayendra
+  Rao}{2002}{bloch2002terror}
+\textbf{Bloch, Francis, {\rm and} Vijayendra Rao.} ``Terror as a Bargaining
+  Instrument: A Case Study of Dowry Violence in Rural India.'' \emph{American
+  Economic Review} 92, no.~4 (2002):~1029.
+
+\harvarditem[Bobonis, Gonz{\'a}lez-Brenes and Castro]{Gustavo~J Bobonis,
+  Melissa Gonz{\'a}lez-Brenes and Roberto Castro}{2013}{bobonis2013public}
+\textbf{Bobonis, Gustavo~J, Melissa Gonz{\'a}lez-Brenes, {\rm and} Roberto
+  Castro.} ``Public Transfers and Domestic Violence: The Roles of Private
+  Information and Spousal Control.'' \emph{American Economic Journal: Economic
+  Policy}  (2013):~179--205.
+
+\harvarditem[Bobonis and Finan]{Gustavo~J Bobonis and Frederico
+  Finan}{2009}{bobonis2009neighborhood}
+\textbf{Bobonis, Gustavo~J, {\rm and} Frederico Finan.} ``Neighborhood Peer
+  Effects in Secondary School Enrollment Decisions.'' \emph{The Review of
+  Economics and Statistics} 91, no.~4 (2009):~695--716.
+
+\harvarditem[Bobonis, Castro and Morales]{Gustavo~J Bobonis, Roberto Castro and
+  Juan~S Morales}{2015}{bobonis2015conditionalc}
+\textbf{Bobonis, Gustavo~J, Roberto Castro, {\rm and} Juan~S Morales.} 2015.
+  ``Conditional Cash Transfers for Women and Spousal Violence: Evidence of the
+  Long-term Relationship from the Oportunidades Program in Rural Mexico.'' IDB
+  Working Paper Series N. 632.
+
+\harvarditem[Bowlus and Seitz]{Audra~J Bowlus and Shannon
+  Seitz}{2006}{bowlus2006domestic}
+\textbf{Bowlus, Audra~J, {\rm and} Shannon Seitz.} ``Domestic Violence,
+  Employment, and Divorce.'' \emph{International Economic Review} 47, no.~4
+  (2006):~1113--1149.
+
+\harvarditem[Brassiolo]{Pablo Brassiolo}{2016}{brassiolo2016domestic}
+\textbf{Brassiolo, Pablo.} ``Domestic Violence and Divorce Law: When Divorce
+  Threats Become Credible.'' \emph{Journal of Labor Economics} 34, no.~2
+  (2016):~443--477.
+
+\harvarditem[Buller et~al.]{Ana~Maria Buller, Amber Peterman, Meghna
+  Ranganathan, Alexandra Bleile, Melissa Hidrobo and Lori
+  Heise}{2018}{buller2018mixed}
+\textbf{Buller, Ana~Maria, Amber Peterman, Meghna Ranganathan, Alexandra
+  Bleile, Melissa Hidrobo, {\rm and} Lori Heise.} ``A Mixed-method Review of
+  Cash Transfers and Intimate Partner Violence in Low-and Middle-income
+  Countries.'' \emph{The World Bank Research Observer} 33, no.~2
+  (2018):~218--258.
+
+\harvarditem[Camacho]{Adriana Camacho}{2008}{camacho2008stress}
+\textbf{Camacho, Adriana.} ``Stress and Birth Weight: Evidence from Terrorist
+  Attacks.'' \emph{American Economic Review Papers and Proceedings} 98, no.~2
+  (2008):~511--515.
+
+\harvarditem[Casique and Castro]{Irene Casique and Roberto
+  Castro}{2014}{casique2014expresiones}
+\textbf{Casique, Irene, {\rm and} Roberto Castro.} ``Expresiones y contextos de
+  la violencia contra las mujeres en M{\'e}xico: An\'{a}lisis comparativo de la
+  ENDIREH 2011.'' \emph{Centro Regional de Investigaciones
+  Multidisciplinarias-INMUJERES.}  (2014).
+
+\harvarditem[Castro~Roberto and Medina]{Florinda~Riquer Castro~Roberto and
+  Mar{\'\i}a~Eugenia Medina}{2006}{castro2006violencia}
+\textbf{Castro~Roberto, Florinda~Riquer, {\rm and} Mar{\'\i}a~Eugenia Medina.}
+  2006. \emph{Violencia de G{\'e}nero en las Parejas Mexicanas: resultados de
+  la Encuesta nacional sobre la Din{\'a}mica de las relaciones en los Hogares
+  2003.} Instituto Nacional de las Mujeres.
+
+\harvarditem[Dee]{Thomas~S Dee}{2003}{dee2003until}
+\textbf{Dee, Thomas~S.} ``Until Death Do You Part: The Effects of Unilateral
+  Divorce on Spousal Homicides.'' \emph{Economic Inquiry} 41, no.~1
+  (2003):~163--182.
+
+\harvarditem[Dell]{Melissa Dell}{2015}{dell2015trafficking}
+\textbf{Dell, Melissa.} ``Trafficking Networks and the Mexican Drug War.''
+  \emph{American Economic Review} 105, no.~6 (2015):~1738--1779.
+
+\harvarditem[Devries et~al.]{Karen~M Devries, Joelle~Y Mak, Loraine~J Bacchus,
+  Jennifer~C Child, Gail Falder, Max Petzold, Jill Astbury and Charlotte~H
+  Watts}{2013}{devries2013intimate}
+\textbf{Devries, Karen~M, Joelle~Y Mak, Loraine~J Bacchus, Jennifer~C Child,
+  Gail Falder, Max Petzold, Jill Astbury, {\rm and} Charlotte~H Watts.}
+  ``Intimate Partner Violence and Incident Depressive Symptoms and Suicide
+  Attempts: A Systematic Review of Longitudinal Studies.'' \emph{PLoS Medicine}
+  10, no.~5 (2013):~e1001439.
+
+\harvarditem[D\'{i}az and Saldarriaga]{Juan~Jos\'{e} D\'{i}az and Victor
+  Saldarriaga}{2022}{diaz2022unconditional}
+\textbf{D\'{i}az, Juan~Jos\'{e}, {\rm and} Victor Saldarriaga.}
+  ``(Un)Conditional Love in the Time of Conditional Cash Transfers: The Effect
+  of the Peruvian JUNTOS Program on Spousal Abuse.'' \emph{Economic Development
+  and Cultural Change} 70, no.~2 (2022).
+
+\harvarditem[Doyle and Aizer]{Joseph~J Doyle, Jr and Anna
+  Aizer}{2018}{doyle2018economics}
+\textbf{Doyle, Jr, Joseph~J, {\rm and} Anna Aizer.} ``Economics of Child
+  Protection: Maltreatment, Foster Care, and Intimate Partner Violence.''
+  \emph{Annual Review of Economics} 10 (2018):~87--108.
+
+\harvarditem[Duflo]{Esther Duflo}{2012}{duflo2012women}
+\textbf{Duflo, Esther.} ``Women Empowerment and Economic Development.''
+  \emph{Journal of Economic Literature} 50, no.~4 (2012):~1051--1079.
+
+\harvarditem[Fearon and Hoeffler]{James Fearon and Anke
+  Hoeffler}{2014}{fearon2014benefits}
+\textbf{Fearon, James, {\rm and} Anke Hoeffler.} ``Benefits and Costs of the
+  Conflict and Violence Targets for the Post-2015 Development Agenda.''
+  \emph{Conflict and Violence Assessment Paper, Copenhagen Consensus Center}
+  (2014).
+
+\harvarditem[Friedberg and Stern]{Leora Friedberg and Steven
+  Stern}{2014}{friedberg2014marriage}
+\textbf{Friedberg, Leora, {\rm and} Steven Stern.} ``Marriage, Divorce, and
+  Asymmetric Information.'' \emph{International Economic Review} 55, no.~4
+  (2014):~1155--1199.
+
+\harvarditem[Garc\'{i}a-Ramos]{Aixa
+  Garc\'{i}a-Ramos}{2021}{GARCIARAMOS2021102623}
+\textbf{Garc\'{i}a-Ramos, Aixa.} ``Divorce Laws and Intimate Partner Violence:
+  Evidence from Mexico.'' \emph{Journal of Development Economics}
+  (2021):~102623.
+
+\harvarditem[Heath, Hidrobo and Roy]{Rachel Heath, Melissa Hidrobo and Shalini
+  Roy}{2020}{heath2020cash}
+\textbf{Heath, Rachel, Melissa Hidrobo, {\rm and} Shalini Roy.} ``Cash
+  transfers, polygamy, and intimate partner violence: Experimental evidence
+  from Mali.'' \emph{Journal of Development Economics} 143 (2020):~102410.
+
+\harvarditem[Heise]{Lori Heise}{2011}{heise2011works}
+\textbf{Heise, Lori.} ``What Works to Prevent Partner Violence? An Evidence
+  Overview.'' \emph{Working Paper, STRIVE Research Consortium, London School of
+  Hygiene and Tropical Medicine}  (2011).
+
+\harvarditem[Hoehn-Velasco and Penglase]{Lauren Hoehn-Velasco and Jacob
+  Penglase}{2021}{hoehn2021impact}
+\textbf{Hoehn-Velasco, Lauren, {\rm and} Jacob Penglase.} ``The Impact of
+  No-fault Unilateral Divorce Laws on Divorce Rates in Mexico.'' \emph{Economic
+  Development and Cultural Change} 70, no.~1 (2021):~203--236.
+
+\harvarditem[Imbens]{Guido~W Imbens}{2003}{imbens2003sensitivity}
+\textbf{Imbens, Guido~W.} ``Sensitivity to Exogeneity Assumptions in Program
+  Evaluation.'' \emph{American Economic Review} 93, no.~2 (2003):~126--132.
+
+\harvarditem[Imbens]{Guido~W Imbens}{2004}{imbens2004nonparametric}
+\textbf{Imbens, Guido~W.} ``Nonparametric Estimation of Average Treatment
+  Effects Under Exogeneity: A Review.'' \emph{Review of Economics and
+  Statistics} 86, no.~1 (2004):~4--29.
+
+\harvarditem[Kavanaugh, Sviatschi and Trako]{Guadalupe Kavanaugh, Maria
+  Sviatschi and Iva Trako}{2019}{kavanaugh2019women}
+\textbf{Kavanaugh, Guadalupe, Maria Sviatschi, {\rm and} Iva Trako.} ``Women
+  Officers, Gender Violence and Human Capital: Evidence from Women's Justice
+  Centers in Peru.'' \emph{Working Paper, Princeton University}  (2019).
+
+\harvarditem[Lalive and Cattaneo]{Rafael Lalive and M~Alejandra
+  Cattaneo}{2009}{lalive2009social}
+\textbf{Lalive, Rafael, {\rm and} M~Alejandra Cattaneo.} ``Social Interactions
+  and Schooling Decisions.'' \emph{The Review of Economics and Statistics} 91,
+  no.~3 (2009):~457--477.
+
+\harvarditem[Leon]{Gianmarco Leon}{2012}{leon2012civil}
+\textbf{Leon, Gianmarco.} ``Civil Conflict and Human Capital Accumulation the
+  Long-term Effects of Political Violence in Per{\'u}.'' \emph{Journal of Human
+  Resources} 47, no.~4 (2012):~991--1022.
+
+\harvarditem[Litwin, Perova and Reynolds]{Ashley Litwin, Elizaveta Perova and
+  Sarah~Anne Reynolds}{2019}{litwin2019conditional}
+\textbf{Litwin, Ashley, Elizaveta Perova, {\rm and} Sarah~Anne Reynolds.} ``A
+  Conditional Cash transfer and Women's Empowerment: Does Bolsa Familia
+  Influence Intimate Partner Violence?'' \emph{Social Science \& Medicine} 238
+  (2019):~112462.
+
+\harvarditem[Michaelsen and Salardi]{Maren~M Michaelsen and Paola
+  Salardi}{2020}{michaelsen2015violence}
+\textbf{Michaelsen, Maren~M, {\rm and} Paola Salardi.} ``Violence,
+  Psychological Stress and Educational Performance During the ``War on Drugs''
+  in Mexico.'' \emph{Journal of Development Economics} 143 (2020):~102387.
+
+\harvarditem[Miguel and Kremer]{Edward Miguel and Michael
+  Kremer}{2004}{miguel2004worms}
+\textbf{Miguel, Edward, {\rm and} Michael Kremer.} ``Worms: Identifying Impacts
+  on Education and Health in the Presence of Treatment Externalities.''
+  \emph{Econometrica} 72, no.~1 (2004):~159--217.
+
+\harvarditem[Miller and Segal]{Amalia~R Miller and Carmit
+  Segal}{2019}{miller2019female}
+\textbf{Miller, Amalia~R, {\rm and} Carmit Segal.} ``Do Female Officers Improve
+  Law Enforcement Quality? Effects on Crime Reporting and Domestic Violence.''
+  \emph{The Review of Economic Studies} 86, no.~5 (2019):~2220--2247.
+
+\harvarditem[Perova]{Elizaveta Perova}{2010}{perova2010buying}
+\textbf{Perova, Elizaveta.} ``Buying out of Abuse: How Changes in Women's
+  Income Affect Domestic Violence.'' \emph{Unpublished manuscript, University
+  of California-Berkeley}  (2010).
+
+\harvarditem[Pierotti]{Rachael~S Pierotti}{2013}{pierotti2013increasing}
+\textbf{Pierotti, Rachael~S.} ``Increasing Rejection of Intimate Partner
+  Violence: Evidence of Global Cultural Diffusion.'' \emph{American
+  Sociological Review} 78, no.~2 (2013):~240--265.
+
+\harvarditem[Ritter~Burga]{Patricia Ritter~Burga}{2014}{ritter2014te}
+\textbf{Ritter~Burga, Patricia.} ``M{\'a}s te quiero, m{\'a}s te pego? El
+  efecto del Programa Juntos en el empoderamiento de las mujeres dentro del
+  hogar.'' \emph{Working Paper. Instituto Nacional de Estad{\'\i}stica e
+  Inform{\'a}tica. Lima}  (2014).
+
+\harvarditem[Roy et~al.]{Shalini Roy, Melissa Hidrobo, John Hoddinott, Bastien
+  Koch and Akhter Ahmed}{2019a}{roy2019can}
+\textbf{Roy, Shalini, Melissa Hidrobo, John Hoddinott, Bastien Koch, {\rm and}
+  Akhter Ahmed.} ``Can Transfers and Behavior Change Communication Reduce
+  Intimate Partner Violence Four Years Post-program? Experimental Evidence from
+  Bangladesh.'' \emph{IFPRI Discussion Paper 1869}  (2019).
+
+\harvarditem[Roy et~al.]{Shalini Roy, Melissa Hidrobo, John Hoddinott and
+  Akhter Ahmed}{2019b}{roy2019transfers}
+\textbf{Roy, Shalini, Melissa Hidrobo, John Hoddinott, {\rm and} Akhter Ahmed.}
+  ``Transfers, Behavior Change Communication, and Intimate Partner Violence:
+  Postprogram Evidence from Rural Bangladesh.'' \emph{Review of Economics and
+  Statistics} 101, no.~5 (2019):~865--877.
+
+\harvarditem[Skoufias]{Emmanuel Skoufias}{2001}{skoufias2001progresa}
+\textbf{Skoufias, Emmanuel.} ``PROGRESA and its Impacts on the Human Capital
+  and Welfare of Households in Rural Mexico: A Synthesis of the Results of an
+  Evaluation by IFPRI.'' \emph{International Food Policy Research Institute,
+  Washington, DC}  (2001).
+
+\harvarditem[Skoufias, Davis and De~La~Vega]{Emmanuel Skoufias, Benjamin Davis
+  and Sergio De~La~Vega}{2001}{skoufias2001targeting}
+\textbf{Skoufias, Emmanuel, Benjamin Davis, {\rm and} Sergio De~La~Vega.}
+  ``Targeting the Poor in Mexico: An Evaluation of the Selection of Households
+  into PROGRESA.'' \emph{World Development} 29, no.~10 (2001):~1769--1784.
+
+\harvarditem[Stevenson and Wolfers]{Betsey Stevenson and Justin
+  Wolfers}{2006}{stevenson2006bargaining}
+\textbf{Stevenson, Betsey, {\rm and} Justin Wolfers.} ``Bargaining in the
+  Shadow of the Law: Divorce Laws and Family Distress.'' \emph{The Quarterly
+  Journal of Economics} 121, no.~1 (2006):~267--288.
+
+\harvarditem[Tsaneva, Rockmore and Albohmood]{Magda Tsaneva, Marc Rockmore and
+  Zahra Albohmood}{2018}{tsaneva2018effect}
+\textbf{Tsaneva, Magda, Marc Rockmore, {\rm and} Zahra Albohmood.} ``The Effect
+  of Violent Crime on Female Decision-making Within the Household: Evidence
+  from the Mexican War on Drugs.'' \emph{Review of Economics of the Household}
+  (2018):~1--32.
+
+\harvarditem[Valdivia and Castro]{Marcos Valdivia and Roberto
+  Castro}{2013}{valdivia2013gender}
+\textbf{Valdivia, Marcos, {\rm and} Roberto Castro.} ``Gender Bias in the
+  Convergence Dynamics of the Regional Homicide Rates in Mexico.''
+  \emph{Applied Geography} 45 (2013):~280--291.
+
+\end{thebibliography}
+
+
+\pagebreak{}
+
+\section*{\protect\pagebreak Tables and Figures}
+
+\begin{figure}[H]
+\begin{centering}
+\caption{Date of introduction of legal reforms across Mexican states}
+\par\end{centering}
+\textcolor{white}{s}\\
+
+\begin{centering}
+\includegraphics[viewport=0bp 0bp 3600bp 2066bp,width=12cm]{Figures/timelineMap}
+\par\end{centering}
+\centering{}\textcolor{white}{s}\\
+{\footnotesize{}Notes: Map shows the years in which the legal reforms
+to state civil codes where introduced across Mexico.}{\footnotesize\par}
+\end{figure}
+
+\begin{figure}[H]
+\begin{centering}
+\caption{Introduction of legal reforms and divorce in the ENDIREH pseudo-panel}
+\par\end{centering}
+\begin{centering}
+\includegraphics[width=16cm]{Figures/divrate_bl2}
+\par\end{centering}
+\centering{}{\small{}Notes: The figure shows the number of states
+that had passed the law reform and the percentage of couples in the
+ENDIREH 2011 pseudo-panel that had divorced between 1997 and 2008}{\small\par}
+\end{figure}
+
+\begin{figure}[H]
+\begin{centering}
+{\scriptsize{}\caption{Event study: Divorce laws and divorce rates for women in the ENDIREH
+2011 pseudo-panel.}
+}{\scriptsize\par}
+\par\end{centering}
+\begin{centering}
+(a) All women
+\par\end{centering}
+\begin{centering}
+{\scriptsize{}\includegraphics[width=12cm]{Figures/EVstudyDrate_weight}}{\scriptsize\par}
+\par\end{centering}
+
+\begin{centering}
+(b) Beneficiaries of Oportunidades
+\par\end{centering}
+\begin{centering}
+{\scriptsize{}\includegraphics[width=12cm]{Figures/EVstudyDBENEFrate_weight}}{\scriptsize\par}
+\par\end{centering}
+\begin{centering}
+(c) Non-beneficiaries
+\par\end{centering}
+\begin{centering}
+{\scriptsize{}\includegraphics[width=12cm]{Figures/EVstudyDNBENEFrate_weight}}{\scriptsize\par}
+\par\end{centering}
+{\scriptsize{}Notes: The figure shows the results of an event-study
+analysis in which coefficients capture changes in divorce rates relative
+to the year before the reform. Sample is a state-year panel of women
+in the ENDIREH 2011 pseudo-panel using inverse sampling weights aggregated
+at the state level. The first and last coefficients are binned to
+capture all pre and post observations respectively. Top figure shows
+all women, middle figure shows women who were beneficiaries of Oportunidades
+and bottom panel shows women who were not beneficiaries of Oportunidades.}{\scriptsize\par}
+\end{figure}
+
+\begin{figure}[H]
+\begin{centering}
+\caption{Incidence of physical (top) and sexual violence (bottom) by beneficiary
+status and survey wave; pseudo-panel (left) and replication sample
+(right)}
+\par\end{centering}
+\begin{centering}
+\includegraphics[width=8cm]{Figures/F1_violfi}\includegraphics[width=8cm]{Figures/F1_violfiRS}
+\par\end{centering}
+\begin{centering}
+\includegraphics[width=8cm]{Figures/F1_violsexu}\includegraphics[width=8cm]{Figures/F1_violsexuRS}
+\par\end{centering}
+\centering{}%
+\noindent\begin{minipage}[t]{1\columnwidth}%
+{\footnotesize{}Notes: Shown are sample proportions of women reporting
+being victims of physical violence (top) and sexual violence (bottom)
+during the previous year, separately for beneficiaries and non-beneficiaries
+of government social programs. The pseudo-panel includes couples in
+rural villages with women ages 25/28/33 and older, with children aged
+0-10/3-13/8-18, in a relationship since 1997. The replication sample
+includes couples in rural villages with women ages 25 and older, with
+children aged 0-10, who have been in a relationship for six years.
+Sample proportions weighted by inverse sampling weights.}%
+\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+\begin{centering}
+\caption{Acceptability of IPV and survey wave; pseudo-panel (left) and replication
+sample (right)}
+\par\end{centering}
+\begin{centering}
+\includegraphics[width=8cm]{Figures/F1_tieneDerecho}\includegraphics[width=8cm]{Figures/F1_tieneDerechoRS}
+\par\end{centering}
+\centering{}%
+\noindent\begin{minipage}[t]{1\columnwidth}%
+{\footnotesize{}Notes: Shown are sample proportions of women stating
+that a husband ``has the right to hit his wife'', for each of the
+2003/2006/2011 surveys. The pseudo-panel includes couples in rural
+villages with women ages 25/28/33 and older, with children aged 0-10/3-13/8-18,
+in a relationship since 1997. The replication sample includes couples
+in rural villages with women ages 25 and older, with children aged
+0-10, who have been in a relationship for six years. Sample proportions
+weighted by inverse sampling weights. Sample proportions weighted
+by inverse sampling weights.}%
+\end{minipage}
+\end{figure}
+
+\pagebreak{}
+
+\begin{table}[H]
+\includegraphics[width=16.5cm]{Figures/t1_nn}
+
+{\tiny{}Notes: Sample means weighted by inverse sampling weights.
+The 2003 sample (column 1) includes couples with women ages 25 and
+older, with children aged 0-10, and who have been in union since 1997
+or earlier. The pseudo-panel (columns 2-3) includes couples with women
+ages 28/33 and older, with children aged 3-13/8-18, and who have been
+in union since 1997 or earlier, respectively for the 2006/2011 surveys.
+The replication sample (columns 4-5) includes women ages 25 and older,
+with children aged 0-10, and who have been in union for at least six
+years.}{\tiny\par}
+\end{table}
+
+\begin{table}[H]
+\begin{centering}
+{\tiny{}\includegraphics[width=14cm]{Figures/t2_nn}}{\tiny\par}
+\par\end{centering}
+\centering{}{\tiny{}}%
+\begin{minipage}[t]{0.85\columnwidth}%
+{\tiny{}Notes: Sample means weighted by inverse sampling weights.
+The 2003 sample (column 1) includes couples with women ages 25 and
+older, with children aged 0-10, and who have been in union since 1997
+or earlier. The pseudo-panel (columns 2-3) includes couples with women
+ages 28/33 and older, with children aged 3-13/8-18, and who have been
+in union since 1997 or earlier, respectively for the 2006/2011 surveys.
+The replication sample (columns 4-5) includes women ages 25 and older,
+with children aged 0-10, and who have been in union for at least six
+years.}%
+\end{minipage}{\tiny\par}
+\end{table}
+
+\begin{table}[H]
+\begin{centering}
+\includegraphics[width=16cm]{Figures/t3_nn}
+\par\end{centering}
+\centering{}{\tiny{}}%
+\begin{minipage}[t]{0.95\columnwidth}%
+{\tiny{}Notes: The exercise uses the state-panel constructed using
+the ENDIREH 2011 survey for women in the pseudo-panel: women ages
+33 and older, with children aged 8-18, and who were in union since
+1997 or earlier. Other reforms controls include states' adoption of
+the Penal Code Reform, which criminalized domestic violence, and the
+Law of Access, Assistance and Prevention against Intra-Family Violence,
+which established government assistance programs to prevent domestic
+violence (Beleche, 2017). Regressions are weighted by sample size
+at the state level. Robust standard errors in parentheses, clustered
+at the state level; significant at ({*}) 90 percent, ({*}{*}) 95 percent,
+({*}{*}{*}) 99 percent confidence levels.}%
+\end{minipage}{\tiny\par}
+\end{table}
+
+\begin{table}[H]
+\begin{centering}
+\includegraphics[width=16cm]{Figures/t4_nn}
+\par\end{centering}
+\centering{}{\tiny{}}%
+\begin{minipage}[t]{0.95\columnwidth}%
+{\tiny{}Notes: Coefficient estimates from OLS regressions weighted
+by survey sampling weights. Sample includes women both divorced and
+in union for the ENDIREH 2011 pseudo-panel: women ages 33 and older,
+with children aged 8-18, and who were in union since 1997 or earlier.
+IPV Divorce Law (2003) is an indicator equal to 1 if the state had
+passed the IPV Divorce Law by 2003. Individual controls include indicator
+variables for woman and partner's age, woman and partner's indigenous
+status, women's schooling-level indicators, the partner\textquoteright s
+schooling attainment level, household size, cohabiting couple indicator,
+years in union, and variables measuring reported histories of spousal
+abuse in parental household during childhood. Robust standard errors
+in parentheses, clustered at the state level; significant at ({*})
+90 percent, ({*}{*}) 95 percent, ({*}{*}{*}) 99 percent confidence
+levels. }%
+\end{minipage}{\tiny\par}
+\end{table}
+
+\begin{table}[H]
+\begin{centering}
+\includegraphics[width=15cm]{Figures/t5_nn}
+\par\end{centering}
+\centering{}{\tiny{}}%
+\begin{minipage}[t]{0.9\columnwidth}%
+{\tiny{}Notes: Coefficient estimates from OLS regressions weighted
+by survey sampling weights. The 2003 sample includes couples with
+women ages 25 and older, with children aged 0-10, and who have been
+in union since 1997 or earlier. The pseudo-panel includes couples
+with women ages 28/33 and older, with children aged 3-13/8-18, and
+who have been in union since 1997 or earlier, respectively for the
+2006/2011 surveys. The replication sample includes women ages 25 and
+older, with children aged 0-10, and who have been in union for at
+least six years. IPV Divorce Law (2003) is an indicator equal to 1
+if the state had passed the IPV Divorce Law by 2003. Individual controls
+include indicator variables for woman and partner's age, woman and
+partner's indigenous status, women's schooling-level indicators, the
+partner\textquoteright s schooling attainment level, household size,
+cohabiting couple indicator, years in union, and variables measuring
+reported histories of spousal abuse in parental household during childhood.
+Robust standard errors in parentheses, clustered at the state level;
+significant at ({*}) 90 percent, ({*}{*}) 95 percent, ({*}{*}{*})
+99 percent confidence levels. }%
+\end{minipage}{\tiny\par}
+\end{table}
+
+\begin{table}[H]
+\begin{centering}
+\includegraphics[width=15cm]{Figures/t6_nn}
+\par\end{centering}
+\centering{}{\tiny{}}%
+\begin{minipage}[t]{0.9\columnwidth}%
+{\tiny{}Notes: Coefficient estimates from OLS regressions weighted
+by survey sampling weights. The 2003 sample includes couples with
+women ages 25 and older, with children aged 0-10, and who have been
+in union since 1997 or earlier. The pseudo-panel includes couples
+with women ages 28/33 and older, with children aged 3-13/8-18, and
+who have been in union since 1997 or earlier, respectively for the
+2006/2011 surveys. The replication sample includes women ages 25 and
+older, with children aged 0-10, and who have been in union for at
+least six years. IPV Divorce Law (2003) is an indicator equal to 1
+if the state had passed the IPV Divorce Law by 2003. Individual controls
+include indicator variables for woman and partner's age, woman and
+partner's indigenous status, women's schooling-level indicators, the
+partner\textquoteright s schooling attainment level, household size,
+cohabiting couple indicator, years in union, and variables measuring
+reported histories of spousal abuse in parental household during childhood.
+Robust standard errors in parentheses, clustered at the state level;
+significant at ({*}) 90 percent, ({*}{*}) 95 percent, ({*}{*}{*})
+99 percent confidence levels.}%
+\end{minipage}{\tiny\par}
+\end{table}
+
+\pagebreak{}
+
+
+\end{document}
+
+\section*{Appendix: For Online Publication}
+
+\subsection*{Additional Information on the Oportunidades Program}
+
+The Oportunidades program promotes children's human development in
+education, nutrition, and health. The education component of Oportunidades
+consists of subsidies typically provided to mothers, contingent on
+their children's regular attendance at school.\footnote{Receipt of the education-specific benefits is contingent on children
+attending school, which is verified by school personnel. For primary
+and secondary school, the child becomes ineligible for support if
+he or she misses school 4 times in a month without justification,
+or 12 times during the school year. High school students become ineligible
+if they are not certified as active during the school semester, defined
+according to the regulations of the institution they attend.} Although PROGRESA initially targeted only children in primary and
+middle school, Oportunidades was expanded to cover children in secondary
+school. In 1998, these ranged from 70 to 255 pesos per month (approximately
+7 to 25 USD), depending on the gender and grade level the child is
+attending, with a maximum of 625 pesos (62.5 USD) per month per family.
+Scholarship amounts have gradually increased, and in 2011 these ranged
+from 150 pesos per month (approximately 12 USD), up to 960 pesos (77
+USD).\footnote{This nominal average value of transfers has gradually increased since
+the start of the program, and its purchasing power has varied (depending
+on price levels in these areas and relative price changes with respect
+to foreign currencies, i.e., USDs) throughout the 1997-2011 period.
+Given these fluctuations, we opt to report the figure valid at the
+date of the most recent ENDIREH survey, 2011.} Families also receive yearly benefits for the purchase of school
+supplies of between 200 and 400 pesos (16 and 32 USD). In a further
+expansion of the program in 2009, it now offers a cash transfer of
+approximately 4,200 pesos to youth graduating from high school before
+age 22 (J$ó$venes con Oportunidades).
+
+The health and nutrition components consist of both cash transfers
+and nutritional supplements. Supplements are targeted at infants 6-months
+to 23-months old, pregnant and breast-feeding women, and children
+aged 2-5 years who exhibit signs of malnutrition. Monthly cash transfers
+for beneficiary families expanded throughout 1997-2011, by 2011 these
+benefits included: nutritional support (Alimentario), 225 pesos (18
+USD), originally part of PROGRESA; energy support (Energético), 60
+pesos, established in 2007 to help families pay for energy costs (electricity,
+gas, firewood, etc.); compensated nutritional support (Alimentario
+Vivir Mejor), 120 pesos, established in 2008 to compensate families
+for rising food prices; child support (Infantil Vivir Mejor), 105
+pesos for every child aged between 0-9, established in 2010; elderly
+support (Adultos Mayores), 315 pesos for every adult aged 70 or over,
+established in 2006. These benefits are contingent on participation
+by mothers in monthly health talks with the local health care provider,
+the vaccination of family members, health checks of all children under
+5 years old, and biannual health checks of all household members.
+Overall, the program transfers are important, representing approximately
+10 percent of the average expenditures of beneficiary families \citep{skoufias2001progresa}.
+Maximum benefit levels have increased by approximately 20 percent
+over time for families with children in only elementary or middle
+school, but have almost doubled for those with children in secondary
+school (see Figure 6).
+
+
+\subsection*{Empirical Extensions and Alternative Explanations}
+
+\textcolor{black}{We evaluate here a series of empirical extensions
+and alternative explanations that can potentially help us understand
+the empirical patterns we documented.}\textcolor{red}{}
+
+\subsubsection*{Unobserved Heterogeneity Within-villages}
+
+In order to address the potential concerns of unobserved heterogeneity
+in the within-village household comparison, we pursue a set of tests
+and sensitivity analyses inspired by the work on diagnostics of selection
+on observable and unobservable variables \citep[i.e.,][]{imbens2003sensitivity,imbens2004nonparametric,altonji2005selection}.
+Essentially, we identify which observable characteristics ($X_{iv}$)
+that are correlated with treatment assignment ($T_{iv}$) - the woman's
+age, partner's age, partner's schooling, family size, and years in
+union - are also significant predictors of spousal abuse outcomes.
+These may plausibly be the covariates most correlated with the unobservable
+characteristics that jointly determine program eligibility/take-up
+and violence outcomes. For those identified variables, we evaluate
+the robustness of the results to flexible specifications that allow
+for high-order and interaction terms between these variables, and
+also include interactions with the woman's levels of education \citep{bobonis2013public}.
+The results obtained from this sensitivity analysis are qualitatively
+and quantitatively similar across specifications.
+
+\subsubsection*{Increasing Rejection of Intimate Partner Violence}
+
+\textcolor{black}{Recent research has documented a rapid global diffusion
+of norms regarding the unacceptability of spousal violence across
+a broad set of countries. Specifically, \citet{pierotti2013increasing}
+uses nationally representative, repeated cross-sectional data from
+Demographic and Health Surveys (DHS) across a broad set of low and
+middle-income countries to document that women of reproductive age
+have increasingly rejected the justification of violence from intimate
+partners. She argues that new global cultural scripts rejecting violence
+against women - via international and national policies and discussions
+starting in the mid/late 1990s - may then be reflected in modifications
+of individual attitudes towards IPV across a large spectrum of societies.
+These new global scripts and norms may have also diffused across Mexican
+society in such ways as to decrease women's tolerance for IPV. }\footnote{\textcolor{black}{Suggestive of this phenomenon in the Mexican context
+is the passage of laws promoting gender equality and establishing
+the right of women to live free of violence in 2006 and 2007, respectively.
+Reports in the 2011 ENDIREH survey that 73 percent of women are knowledgeable
+of the gender equality legislation and 82 percent of women report
+being knowledgeable of the freedom from violence legislation are consistent
+with a strong dissemination of these scripts as embodied in national
+policy.}}
+
+\textcolor{black}{To evaluate this hypothesis, we use additional information
+available in the ENDIREH data. Following the analysis in \citet{pierotti2013increasing},
+we construct an indicator variable that measures whether the woman
+believes an intimate partner is justified in hitting or beating his
+female partner when she does not meet her responsibilities.}\footnote{{The 2003 and 2006 survey rounds ask the same question:
+\textquotedbl En su opini\'on, cuando la mujer no cumple con sus obligaciones,
+el marido tiene el derecho de pegarle?\textquotedbl{} {[}In your opinion,
+when a women does not meet her responsibilities, the partner has the
+right to hit her?{]}. In contrast, the question in the 2011 survey
+round is modified: \textquotedbl El hombre tiene el derecho de pegarle
+a su esposa?\textquotedbl{} {[}Does a man have the right to hit his
+partner?{]} Therefore, the responses in the 2011 survey round are
+not strictly comparable to those in earlier rounds. We report these
+in order to show a more complete picture, subject to this caveat.}}{{} These measures are imperfectly comparable to those
+from existing DHS data.}\footnote{\textcolor{black}{Specifically, \citet{pierotti2013increasing} constructs
+outcome variables derived from questions that asked respondents whether
+it is okay for a man to hit or beat his wife under certain circumstances.
+Specifically, the most common form of the question asked, \textquotedbl Sometimes
+a husband is annoyed or angered by things which his wife does. In
+your opinion, is a husband justified in hitting or beating his wife
+in the following situations?\textquotedbl{} The five scenarios presented
+to respondents were (1) if she goes out without telling him, (2) if
+she neglects the children, (3) if she argues with him, (4) if she
+refuses to have sex with him, and (5) if she burns the food.\textquotedbl{}
+\citep[p. 248]{pierotti2013increasing}.}}\textcolor{black}{{} The proportion of women in our sample who reported
+a husband ``has the right'' to hit his wife decreased from approximately
+20 percent in 2003 to approximately 9 percent in 2006 and 3 percent
+in 2011. Figure 6 shows the trend in this measure among couples in
+the sample across the three survey years, by beneficiary status. Consistent
+with the cross-country evidence, the proportion of women reporting
+some justification of IPV shows a sharp reduction over this time period.
+This stark change in the justification of IPV occurs among women in
+both beneficiary and non-beneficiary households. For the pseudo-panel
+we observe a decrease of 12.4 percentage points (54 percent; significant
+at 95 percent confidence) - from 22.8 percent in 2003 to 10.4 percent
+in 2006 - among women in beneficiary households, and a similar change
+of 9.9 percentage points (58 percent; significant at the 95 percent
+confidence level) among those in non-beneficiary households. We estimate
+further decreases of proportional size between the 2006 and 2011 survey
+rounds. These patterns also hold for the replication sample (Figure
+6, right), as the forces driving these patterns are present across
+Mexican society.}
+
+Table 7 presents estimates of the relationship between Oportunidades
+and Acceptability of IPV (analogous to those in Table 6 but with this
+measure as the dependent variable). We find that the relationship
+between the CCT program and acceptability of IPV is heterogenous across
+Mexican states. In particular, the interaction between Oportunidades
+and the IPV legal reforms is negative and significant, suggesting
+that beneficiary women in reform states are 14.5 percentage points
+less likely to report that husbands are justified in hitting their
+wives, relative to those in non-reform states (column 2). This evidence
+provides additional support to the complementary roles of legal reforms
+and the CCT program in reducing IPV. The negative relationship persists
+in 2006 but becomes statistically insignificant (column 4). In 2011,
+we find an overall negative relationship between the Oportunidades
+program and Acceptability of IPV for the replication sample (columns
+5 and 6, Panel B).
+
+\subsubsection*{\textcolor{black}{Spillover effects}}
+
+\textcolor{black}{A first alternate explanation is that the program
+empowers women in the community and provides them with the instruments
+to prevent spousal abuse, directly via interactions with beneficiary
+women with higher levels of empowerment in the community, or indirectly
+via improved socio-economic conditions and options outside of current
+relationships or changes in the norms of intolerance of abuse, among
+other mechanisms.}\footnote{\textcolor{black}{As shown by \citet{angelucci2009indirect} and \citet{avitabile2012spillover},
+the program had spillover effects on the consumption levels and health
+behaviors (i.e., cervical cancer checks) of non-beneficiary households.
+\citet{bobonis2009neighborhood}, \citet{lalive2009social} show evidence
+of spillovers effects on middle school participation among children
+in non-beneficiary households.}}\textcolor{black}{{} Therefore, to the extent that these spillover effects
+reduce the incidence of abuse among non-beneficiary women and increase
+female partners' intolerance of abuse, this can help explain the patterns
+shown earlier.}
+
+\textcolor{black}{We evaluate this alternate explanation empirically
+by estimating empirical models that capture spillover effects at the
+level of the village. Specifically, we estimate a variant of our main
+empirical model (1). The regression equation incorporating these effects
+is the following: 
+\begin{equation}
+Y_{ivm}=\theta_{1}T_{ivm}+\beta_{1}E[T_{-i,v,m}]+X_{ivm}\beta_{2}+\alpha_{m}+\varepsilon_{ivm}
+\end{equation}
+where the treatment indicator $T_{ivm}$ equals one for beneficiary
+household $i$ in village $v$, municipality $m$ and is zero otherwise;
+$E[T_{-i,v,m}]$ represents the proportion of beneficiary households
+in the sample in village $v$ (excluding household $i$). This specification
+incorporates the possibility that local spillovers are a (linear)
+function of the proportion of beneficiary households in the village
+\citep[e.g.,][]{miguel2004worms}. These potential effects are captured
+by the $\beta_{1}$ term. We also estimate additional specifications
+that allow for heterogeneous spillover effects among beneficiary and
+non-beneficiary households by including an interaction term between
+$T_{ivm}$ and $E[T_{-i,v,m}]$. Since the $E[T_{-i,v,m}]$ term is
+highly collinear with village fixed effects, we substitute these for
+municipality fixed effects in these specifications.}
+
+\textcolor{black}{We report estimates of these models in the online
+appendix Table 8, columns 1-3; Panel A reports estimates for the 2006
+data whereas Panel B reports analogous ones for the 2011 data. The
+estimates imply that a 10 percentage point increase in the proportion
+of beneficiary women leads to a statistically insignificant 0.3 percentage
+point increase in the incidence of physical or sexual abuse in 2006,
+and a 0.2 percentage point decrease in its incidence in 2011 (column
+1). In the specification allowing for heterogeneous spillover effects
+by beneficiary status, the point estimates imply a statistically insignificant
+decrease in spousal violence for women in villages with larger shares
+of beneficiaries (column 3). Finally, it is worth noting that issues
+of unobserved heterogeneity generally cause upward bias (in absolute
+magnitude) in the estimates of the spillover effects; such that these
+can be considered overestimates of the true spillover or social interaction
+effects. We conclude that this alternative mechanism cannot explain
+the results.}
+
+\subsubsection*{\textcolor{black}{Generalized Social Violence}}
+
+\textcolor{black}{Another potential alternate explanation we consider
+is changes in the incidence of abuse or in its reporting due to the
+marked increase in social violence. As is well known, Mexico has seen
+a surge in homicide rates since 2007, and it has been concentrated
+in particular regions of the country. Many analysts attribute this
+drastic change in the level of violence to consequences of the federal
+government's anti-crime policies meant to combat drug cartels \citep[e.g.,][]{astorga2010drug,dell2015trafficking}.}
+
+\textcolor{black}{We consider the potential for this surge in generalized
+social violence across municipalities and or states to affect the
+trends in spousal abuse and the relationship with program beneficiary
+status. On one hand, to the extent that the surge in homicides can
+impinge on partners' stress levels or their levels of emotional health
+more broadly, this could lead to greater conflict-related abuse. On
+the other hand, if this generalized conflict negatively impinges on
+women's willingness to report events of abuse, this would be consistent
+with the significant drop in reported abuse rates in 2011, although
+not so in the year 2006. These are two potential mechanisms that would
+induce heterogeneity in the relationship, among others.}
+
+\textcolor{black}{We evaluate this idea empirically by estimating
+models that capture these factors at the level of the municipality
+or state. The regression equation incorporating these factors is the
+following: 
+\begin{equation}
+Y_{ivm}=\theta_{1}T_{ivm}+\theta_{2}T_{ivm}H_{m(s)}+\beta_{1}H_{m(s)}+X_{ivm}\beta_{2}+\varepsilon_{ivm}
+\end{equation}
+The $H_{m(s)}$ variable measures the homicide rate per hundred thousand
+individuals in municipality $m$ (or alternatively, state $s$); the
+other variables are defined as above.}\footnote{\textcolor{black}{The homicide data is available from Mexico's National
+Statistics and Geography Institute (INEGI). We follow the standard
+specifications in the literature and estimate the relationship between
+violence and individual/household outcomes with measures of violence
+at the municipality level \citep[e.g.,][]{camacho2008stress,leon2012civil}.
+Empirical models of this sort find strong relationships with adult
+labor force participation \citep{benyishay2013homicide} and student
+achievement \citet{michaelsen2015violence} in Mexico.}}\textcolor{black}{{} The homicides measures are included for the calendar
+year preceding the household survey (2005 and 2010, respectively)
+since the surveys are conducted over a long time period and we aim
+to ensure that the timing of measured homicides predates that of abuse
+outcomes.}\footnote{\textcolor{black}{The results are robust to using contemporaneous
+year measures (2006 and 2011, respectively). These are also robust
+to the use of gender-specific homicide rates, in spite of the different
+trends among the victim's gender, shown in \citet{valdivia2013gender}.
+Estimates are available upon request.}}\textcolor{black}{{} The $\beta_{1}$ coefficient captures the partial
+correlation between homicides and spousal abuse rates among non-beneficiary
+couples, whereas the $\theta_{2}$ term captures the differential
+correlation among beneficiary ones. In our main specification, because
+the homicide rate is measured at the municipality level, we do not
+include village fixed effects in this specification. In a second specification
+with village fixed effects, we can identify the differential effect
+for beneficiary couples.}
+
+\textcolor{black}{We report estimates of these models fin Table 8,
+columns 4-6. The estimate for 2006 implies that a one standard deviation
+increase in the municipality-level homicide rate (10.18 deaths per
+100,000 individuals) is associated with a 1.6 percentage point decrease
+in spousal abuse (column 4, 0.01018$\times$-1.615), and although
+the relationship is stronger for beneficiary women (column 6), this
+is not differentially so. Analogous estimates for survey year 2011
+imply that a one standard deviation increase in the homicide rate
+is associated with a 0.5 percentage decrease in IPV, not statistically
+significant (0.01971$\times-0.303$). We conclude that, although some
+evidence is suggestive of generalized social violence being associated
+with overall changes in IPV, and in particular for 2006, it does not
+explain the loosening of the relationship between program beneficiary
+status and spousal abuse.}\footnote{\textcolor{black}{These results are somewhat consistent with recent
+work presented in \citet{tsaneva2018effect} that finds that the effects
+of violent crime on female decision-making in Mexico are small and
+tend to be short-lived. }}
+
+\subsubsection*{\textcolor{black}{Improvement in Women's Labor Market Opportunities}}
+
+\textcolor{black}{An extensive literature documents that increases
+in a woman's relative labour opportunities, possibly by increasing
+her bargaining power within the household by means of an improvement
+in her outside option, can lead to lower levels of violence \citep[e.g.,][]{bowlus2006domestic,aizer2010gender,anderberg2016unemployment}.
+If women's relative income-generating opportunities have improved
+in Mexico over the last decade, this may help explain the strong decline
+in the incidence of violence. To evaluate this hypothesis, we estimate
+models analogous to \citet{aizer2010gender}'s that capture the mitigating
+effects of the gender wage gap at the state level. The regression
+equation incorporating these effects is the following: 
+\begin{equation}
+Y_{ivs}=\theta_{1}T_{ivs}+\theta_{2}T_{ivs}W_{s}+\beta_{1}W_{s}+X_{ivs}\beta_{2}+\varepsilon_{ivs}
+\end{equation}
+The $W_{s}$ variable measures the female/male wage ratio in state
+$s$ relative to the average gender wage gap for the sample of women
+and men in our study; the other variables are defined as above. The
+$\beta_{1}$ coefficient captures the partial correlation between
+the female/male wage ratio and spousal abuse rates among non-beneficiary
+couples, whereas the $\theta_{2}$ term captures the differential
+correlation among beneficiary ones. We use the state-level rural wage
+gap measure because the surveys are representative at the state level
+and thus the lowest level of aggregation at which these measures can
+be consistently estimated is at this level.}\footnote{\textcolor{black}{Using a state-level female wage gap measure may
+be somewhat restrictive for purposes of the analysis, as it may not
+appropriately capture the relative labor market opportunities women
+face across distinct municipalities and villages within the state.
+However, it should capture broad differences at the state level in
+these relative labor market opportunities.}}\textcolor{black}{{} Moreover, because the female/male wage ratio rate
+is measured at the state level, we do not include village or state
+fixed effects in this specification. In a second specification with
+state fixed effects, we can identify the differential effect for beneficiary
+couples.}
+
+\textcolor{black}{We report estimates of these models in Table 8,
+columns 7-9. The estimate for 2006 implies that a 10 percentage point
+increase in the female/male wage ratio is associated with a decrease
+in spousal abuse by 0.2 percentage points (Panel A, column 7). The
+relationship for 2011 implies that an analogous increase in the later
+period is associated with a 2.1 percentage point decrease in spousal
+abuse (Panel B, column 7).}\footnote{\textcolor{black}{In 2006, the average wage gap for our sample was
+24 percentage points, and by 2011, the average wage gap was substantially
+smaller, at 12 percentage points.}}\textcolor{black}{{} Neither of these estimates is statistically significant.
+Moreover, if we estimate a model that allows for a heterogeneous response
+by couples' beneficiary status, it implies that beneficiary women
+in states with lower female/wage ratios observe larger reductions
+in spousal abuse, relative to beneficiary women in states with higher
+female/male wage ratios. Though the estimates are not statistically
+significant for 2006 (column 9, Panel A), they are significant at
+the 90 percent level for 2011 (column 9, Panel B). The coefficients
+imply, on one end of the spectrum, that beneficiary women in legal
+reform states with the lowest female/male wage ratios (0.79), are
+4.5 percentage points less likely to be victims of spousal abuse (0.79$\times0.319$
+- 0.264 - 0.035). On the other hand, beneficiary women in non-reform
+states with the highest female/male wage ratios (0.98), are 4.5 percentage
+points more likely to be victims of spousal abuse (0.98$\times0.319$
+- 0.264). These heterogeneous effects imply a greater reduction in
+spousal abuse rates among beneficiary households in contexts of larger
+gender wage gaps. It also suggests that the complementarity between
+IPV divorce laws and the CCT program, though much weaker than in the
+short-run, tends to persist in the longer-run.}
+
+\pagebreak{}
+
+\begin{figure}[H]
+\caption{Oportunidades Program Maximum Monthly Benefits (in Real 1998 Mexican
+Pesos)}
+
+\includegraphics[width=16cm]{Figures/oport}
+
+Source: Authors' calculations based on data from Secretariat of Social
+Development (SEDESOL) Mexico and the Bank of Mexico.
+\end{figure}
+
+\begin{table}[H]
+\includegraphics[width=15cm]{Figures/t7_nn}
+\centering{}{\tiny{}}%
+\begin{minipage}[t]{0.95\columnwidth}%
+{\tiny{}Notes: Coefficient estimates from OLS regressions weighted
+by survey sampling weights. Acceptability of IPV is an indicator on
+whether the woman believes a partner is justified in hitting or beating
+his female partner. The 2003 sample includes couples with women ages
+25 and older, with children aged 0-10, and who have been in union
+since 1997 or earlier. The pseudo-panel includes couples with women
+ages 28/33 and older, with children aged 3-13/8-18, and who have been
+in union since 1997 or earlier, respectively for the 2006/2011 surveys.
+The replication sample includes women ages 25 and older, with children
+aged 0-10, and who have been in union for at least six years. IPV
+Divorce Law (2003) is an indicator equal to 1 if the state had passed
+the IPV Divorce Law by 2003. Individual controls include indicator
+variables for woman and partner's age, woman and partner's indigenous
+status, women's schooling-level indicators, the partner\textquoteright s
+schooling attainment level, household size, cohabiting couple indicator,
+years in union, and variables measuring reported histories of spousal
+abuse in parental household during childhood. Robust standard errors
+in parentheses, clustered at the state level; significant at ({*})
+90 percent, ({*}{*}) 95 percent, ({*}{*}{*}) 99 percent confidence
+levels.}%
+\end{minipage}{\tiny\par}
+\end{table}
+
+\begin{table}[H]
+\begin{centering}
+\includegraphics[width=16cm]{Figures/t8_nn}
+\par\end{centering}
+\centering{}{\tiny{}}%
+\begin{minipage}[t]{0.95\columnwidth}%
+{\tiny{}Notes: Coefficient estimates from OLS regressions weighted
+by survey sampling weights. The 2003 sample includes couples with
+women ages 25 and older, with children aged 0-10, and who have been
+in union since 1997 or earlier. The pseudo-panel includes couples
+with women ages 28/33 and older, with children aged 3-13/8-18, and
+who have been in union since 1997 or earlier, respectively for the
+2006/2011 surveys. The replication sample includes women ages 25 and
+older, with children aged 0-10, and who have been in union for at
+least six years. IPV Divorce Law (2003) is an indicator equal to 1
+if the state had passed the IPV Divorce Law by 2003. Individual controls
+include indicator variables for woman and partner's age, woman and
+partner's indigenous status, women's schooling-level indicators, the
+partner\textquoteright s schooling attainment level, household size,
+cohabiting couple indicator, years in union, and variables measuring
+reported histories of spousal abuse in parental household during childhood.
+Robust standard errors in parentheses, clustered at the state level;
+significant at ({*}) 90 percent, ({*}{*}) 95 percent, ({*}{*}{*})
+99 percent confidence levels. }%
+\end{minipage}{\tiny\par}
+\end{table}
+
+\pagebreak{}
+
+\subsection*{Theoretical Framework}
+
+We present a model of spousal relations to highlight the mechanisms
+through which legal reforms and conditional cash transfers could affect
+divorce and conflict within the household. Our theoretical framework
+incorporates bargaining and conflict with incomplete information,
+together with endogenous divorce decisions, to formalize the effects
+that these two distinct sets of policies can have on the incidence
+of conflict and divorce. For simplicity, we use a model where male
+partners have significantly more bargaining power and this is fixed.
+\footnote{An extension to increasing women\textquoteright s bargaining power
+eliminates testable predictions and stresses even further the need
+for empirical approaches.}
+
+As is common in the literature on intra-household bargaining, partners
+use their resources to generate a marital surplus and bargain over
+its allocation; who owns the resources in the household matters by
+affecting the spouses' outside options. Building on the work of \citet{anderson2015suicide}
+and \citet{brassiolo2016domestic}, in order for bargaining to fail
+some of the time we assume that spouses derive some private satisfaction
+with the marriage, whose magnitude is unknown to their partner. We
+further assume that when an offer is rejected, conflict ensues. This
+comes at a cost to each spouse, and a cost whose magnitude is realized
+only at the time of the conflict. The cost of conflict in our model
+can be thought of as the physical and or psychological pain that each
+spouse endures during an episode of violence. Its magnitude is uncertain
+ex-ante since it depends on many factors, including each spouse's
+ability to cope with it. Separation can only be achieved after going
+through a period of marital conflict; after observing her private
+cost of conflict, the wife may decide to end the relationship.
+
+We model the legal reform as a reduction in the cost to divorce faced
+by the wife, as these policies allow women to unilaterally initiate
+divorce proceedings if they were victims of family violence. We also
+model the introduction of the CCT as an increase in the wife's income,
+consistent with the idea that these transfers were targeted towards
+the female partner. The model therefore allows us to think about the
+effects of these two policies and their interaction on the incidence
+of conflict and divorce. Most importantly, the model allows us to
+capture the selection mechanisms through which the policies may affect
+the types of couples that remain married and those that choose to
+divorce.
+
+\subsection*{Preferences}
+
+We assume three possible states in a relationship: cooperation, conflict,
+and divorce. The utility functions of the partners depend on the status
+of their marriage.
+
+\textbf{Cooperation}
+
+The utility function in the cooperation state depends on the share
+of household resources each partner gets and their private gains to
+marriage. Specifically, we assume that preferences for the wife and
+husband are represented by the utility functions:
+\begin{equation}
+V^{w}(x,\theta_{w};I_{w})=u({\color{blue}{\color{black}x(I_{h}+I_{w})}})+\theta_{w}\ \&\ V^{h}(x,\theta_{h};I_{h})=u({\color{blue}{\color{black}(1-x)(I_{h}+I_{w})}})+\theta_{h},
+\end{equation}
+where $u(.)$ is a concave function representing the utility from
+consumption, i.e. $u'(.)\geq0$ and $u"(.)\leq0$, and $\theta_{i},\ i\in\{w,h\}$
+represent a personal satisfaction from marriage. Partners enjoy consumption
+from their shared resources, where $I_{i},\ i\in\{w,h\}$ is the individual
+income each partner contributes to the marriage and $x$ captures
+the share of resources that are allocated to the wife's consumption
+. We follow \citet{bloch2002terror,bobonis2013public,friedberg2014marriage}
+in assuming that each spouse's personal utility from marriage is private
+information; $\theta_{i},\ i\in\{w,h\}$ are independent and follow
+a distribution $\theta_{w},\theta_{h}\sim G(.)$ with support $[\underline{\theta},\bar{\theta}]$,
+such that $\underline{\theta}>0$, i.e. both husband and wife enjoy
+positive utility from marriage.
+
+\textbf{Conflict}
+
+Households in the conflict state do not share resources; they enjoy
+utility of consumption only from their own income, and incur a cost
+of conflict $\kappa_{i},\ i\in\{w,h\}$; this captures both a private
+cost of conflict as perceived by each partner as well as the intensity
+of the conflict. For instance, a more violent husband will impose
+a higher $\kappa_{w}$ on his wife. Specifically, the utility functions
+in this state are represented by:
+
+\begin{equation}
+U^{w}(\theta_{w,}\kappa_{w};I_{w})=u(I_{w})+\theta_{w}-\kappa_{w}
+\end{equation}
+for the wife, and
+
+\begin{equation}
+U^{h}(\theta_{h},\kappa_{h};I_{h})=u(I_{h})+\theta_{h}-\kappa_{h}
+\end{equation}
+for the husband. We assume $\kappa_{w},\kappa_{h}\sim F(.)$ with
+support $[\underline{\kappa},\bar{\kappa}]$, and $\underline{\kappa}\geq0$,
+i.e. conflict will impose a loss in utility for both husband and wife.\footnote{One important distinction in our setup relative to that in \citet{anderson2015suicide}
+is that couples in the conflict state continue to enjoy the private
+gains to marriage.} 
+
+\textbf{Divorce}
+
+Partners who separate enjoy only their own income for consumption:
+
+\begin{equation}
+U_{D}^{w}(I_{w},\rho)=u(I_{w})+\rho
+\end{equation}
+for the wife, and
+
+\begin{equation}
+U_{D}^{h}(I_{h})=u(I_{h})
+\end{equation}
+ for the husband. In addition, the parameter $\rho$ captures the
+additional utility or outside option from divorce for the wife such
+that $\rho<0$ would represent a net loss from divorce. A reduction
+in divorce costs are represented by an increase in $\rho$.
+
+\subsection*{Timing}
+
+Once married, each partner observes his/her level of private satisfaction
+from the marriage. The husband then proposes a division of household
+resources such that the wife gets share $x$ (and the husband gets
+share $1-x$) of total household income. The wife then chooses to
+accept or reject the husband's offer. If the wife accepts, they enter
+the cooperative state and enjoy $V^{w}$ and $V^{h}$ as their utility.
+If the wife rejects the offer, they enter the conflict state and learn
+their costs $\kappa$. The wife can then choose to divorce the husband.
+If she decides to stay married, they stay in the conflict state and
+get $U^{w}$ and $U^{h}$, otherwise if they divorce, they get $U_{D}^{w}$
+and $U_{D}^{h}$. For simplicity, we assume husbands choose $x$,
+while wives choose whether to divorce or not.
+
+\subsection*{Decisions}
+
+We use backward induction to present the decisions at each stage:
+
+\textbf{Wife's divorce decision:} The wife chooses to divorce if $U^{w}$<$U_{D}^{w}$,
+or equivalently, the couple remains married if $\kappa_{w}\leq\theta_{w}-\rho$.
+
+\textbf{Partners' cooperation or conflict decision:} If the wife rejects
+an offer, her expected utility is given by: 
+
+\begin{equation}
+\begin{array}{cc}
+E_{w}(\theta_{w};I_{w},\rho) & =F(\theta_{w}-\rho)[u(I_{w})+\theta_{w}]-\int_{-\infty}^{\theta_{w}-\rho}\kappa dF(\kappa)+[1-F(\theta_{w}-\rho)][u(I_{w})+\rho]\\
+ & =u(I_{w})+\rho+F(\theta_{w}-\rho)(\theta_{w}-\rho)-\int_{-\infty}^{\theta_{w}-\rho}\kappa dF(\kappa)
+\end{array}
+\end{equation}
+The expected utility captures both possible states after rejecting
+an offer, conflict or divorce. A wife accepts the offer $x$ if:
+\begin{equation}
+V^{w}(x,\theta_{w};I_{w})\geq E_{w}(\theta_{w};I_{w},\rho)
+\end{equation}
+
+\textbf{Husband's offer decision:} Let $\tilde{\theta}(x;I_{w},\rho)$
+be the value of $\theta_{w}$ such that $V^{w}(x,\theta_{w};I_{w})=E_{w}(\theta_{w};I_{w},\rho)$,
+then a wife accepts an offer if and only if $\theta_{w}\geq\tilde{\theta}(x;I_{w},\rho)$,
+where $\tilde{\theta}(x;I_{w},\rho)$ solves 
+\begin{equation}
+u({\color{blue}{\color{black}x(I_{h}+I_{w})}})+\theta_{w}=u(I_{w})+\rho+F(\theta_{w}-\rho)(\theta_{w}-\rho)-\int_{-\infty}^{\theta_{w}-\rho}\kappa dF(\kappa)
+\end{equation}
+
+Hence, $G[\tilde{\theta}(x;I_{w},\rho)]$ is the probability that
+an offer $x$ is rejected from the husband's perspective. The husband\textquoteright s
+expected utility if the wife rejects the offer is: 
+\begin{equation}
+E_{h}(\theta_{h};I_{h},\rho)=u(I_{h})+[\theta_{h}-E(\kappa)]\frac{1}{G[\tilde{\theta}(x;I_{w},\rho)]}\int_{-\infty}^{\tilde{\theta}(x;I_{w},\rho)}F(\theta_{w}-\rho)dG(\theta_{w})
+\end{equation}
+
+\begin{flushleft}
+Anticipating the potential rejection of the offer by the wife, the
+husband chooses an offer $x^{*}(\theta_{h};I_{h},I_{w},\rho)$ that
+maximizes his expected utility:
+\begin{equation}
+\begin{array}{ccc}
+h(x,\theta_{h};I_{h},I_{w},\rho) & = & (1-G[\tilde{\theta}(x;I_{w},\rho)])V^{h}(x,\theta_{h};I_{h}+I_{w})+G[\tilde{\theta}(x;I_{w},\rho)]E_{h}(\theta_{h};I_{h},\rho)\\
+ & = & [1-G(\tilde{\theta})][u({\color{blue}{\color{black}(1-x)(I_{h}+I_{w})}})+\theta_{h}]+G(\tilde{\theta})u(I_{h})\\
+ &  & +(\theta_{h}-E(\kappa))\int_{-\infty}^{\tilde{\theta}}F(\theta_{w}-\rho)dG(\theta_{w}).
+\end{array}
+\end{equation}
+\par\end{flushleft}
+
+Our main objects of interest are the \textbf{\textit{divorce rate}}
+\textendash{} the proportion of partners who choose to divorce \textendash{}
+and the \textbf{\textit{conflict rate}} \textendash{} those who remain
+in the conflict state. The divorce rate ($D$) is given by the probability
+that a wife\textcolor{red}{{} }\textcolor{black}{rejects an offer times
+}the probability that she chooses to divorce in the case of rejection.
+Accordingly, it is given by:
+
+\begin{equation}
+D(I_{h},I_{w},\rho)=\int_{-\infty}^{\infty}\int_{-\infty}^{\tilde{\theta}(x^{*}(\theta_{h};I_{h},I_{w},\rho);I_{w},\rho)}(1-F[\theta_{w}-\rho])dG(\theta_{w})dG(\theta_{h})
+\end{equation}
+
+The conflict rate is given by the probability that the wife\textcolor{red}{{}
+}\textcolor{black}{rejects an offer }conditional on\textcolor{black}{{}
+not divorcing}:
+\begin{equation}
+C(I_{h},I_{w},\rho)=\frac{\int_{-\infty}^{\infty}\int_{-\infty}^{\tilde{\theta}(x^{*}(\theta_{h};I_{h},I_{w},\rho);I_{w},\rho)}F[\theta_{w}-\rho]dG(\theta_{w})dG(\theta_{h})}{1-\int_{-\infty}^{\infty}\int_{-\infty}^{\tilde{\theta}(x^{*}(\theta_{h};I_{h},I_{w},\rho);I_{w},\rho)}(1-F[\theta_{w}-\rho])dG(\theta_{w})dG(\theta_{h})}.
+\end{equation}
+
+
+\subsection*{Predictions}
+
+We are interested in studying how changes in the two parameters of
+interest, a reduction in divorce costs due to the legal reform, $\rho$,
+and the CCT program (represented by an increase in the wife's income),
+affect the two outcomes of interest: the divorce rate ($D$) and the
+conflict rate ($C$). For simplicity, we assume that once an offer
+$x^{*}$ has been made by the husband, it remains fixed. We summarize
+the main results here and present derivations and extensions in the
+theoretical appendix.
+
+\subsubsection*{Result 1:}
+
+\textit{As divorce costs decrease, the equilibrium divorce rate increases
+}($\frac{\partial D}{\partial\rho}>0$). There are two forces driving
+this result: a direct effect in which the decrease in $\rho$ (i.e.
+an increase in the outside option) makes couples who are in conflict
+more likely to choose to divorce; and an indirect effect by which
+the wife's expected utility from rejecting an offer becomes higher
+and hence it is more likely for wives to choose to reject an offer
+and enter the conflict or divorced state.
+
+\subsubsection*{Result 2:}
+
+\textit{The change in the equilibrium conflict rate with respect to
+a decrease in divorce costs is ambiguous }$(\frac{\partial C}{\partial\rho}$
+< or > 0). \textit{Women with sufficiently high costs of conflict
+}($\kappa_{w}$) \textit{or sufficiently low private gains from marriage
+}($\theta_{w}$) \textit{are more likely to exit the relationship}
+($\frac{\partial C}{\partial\rho}$ $<0$ if $\kappa_{w}>\bar{\kappa_{w}}$
+or $\theta_{w}<\text{\ensuremath{\underbar{\ensuremath{\theta_{w}}}}}$).
+Again, there are two main forces driving this result. On one hand,
+after the offer is rejected by the wife she is more likely to choose
+to divorce instead of remaining in the conflict state. This effect
+makes couples more likely to get divorced and less likely to be in
+conflict. On the other hand, given a higher expected utility in the
+conflict state ($E_{w}(\theta_{w};I_{w},\rho)$), the more likely
+the wife is to reject her husband's offer, such that the proportion
+of households in the cooperative state decreases. The overall magnitude
+of the effect depends on the distribution of the wives' private gains
+from marriage ($\theta_{w}$).
+
+\textit{The types of couple remaining in the conflict state changes
+as $\rho$ increases.} In particular, women with high costs of conflict
+$\kappa_{w}$ and lower private gains from marriage $\theta_{w}$
+are more likely to exit the relationship (as highlighted by the direct
+effect) relative to women with lower $\kappa_{w}$ and higher $\theta_{w}$.
+If conflict manifests itself in different forms across different levels
+of $\kappa,$then this particular selection mechanism, through which
+different types of couples remain in marriage after changes in divorce
+laws, is an important channel through which the potential effects
+arise.
+
+\subsubsection*{Result 3:}
+
+\textit{The effect of an increase in the wife's income on the equilibrium
+divorce rate depends on the wife's ex ante outside option and her
+partner's private gains to marriage. Specifically, there exist thresholds
+$\rho_{H},$ $\rho_{L}$ and $\hat{\theta}$, such that: }
+\begin{flushleft}
+\begin{equation}
+\frac{\partial D}{\partial I_{w}}\begin{cases}
+\begin{array}{ccc}
+>0 & \text{if} & \rho>\rho_{H}\\
+<0 & \text{if} & \rho<\rho_{L}
+\end{array}\end{cases}
+\end{equation}
+\par\end{flushleft}
+
+How the wife's income affects divorce rates depends on the ex-ante
+allocation of resources $x^{*}$ proposed by the husband and the utility
+function from consumption $u$. Two important determinants of $x^{*}$
+are the wife's initial outside option, which depends on $\rho$, and
+the husband's private utility from the marriage $\theta_{h}$. Women
+facing very low divorce costs ($\rho>\rho_{H}$) are compensated by
+husbands through a high share $x^{*}$ of household resources. However,
+since utility is diminishing in consumption, an increase in $I_{w}$
+increases the utility of rejecting the husband's offer relative to
+the utility of staying together, such that $\frac{\partial D}{\partial I_{w}}>0$.
+On the other hand, if women face very high divorce costs ($\rho<\rho_{L}$),
+the reverse is true.
+
+For, $\rho_{L}<\rho<\rho_{H},$ changes in the divorce rate will depend
+on the distribution of types $F$ and $G$.Husbands who enjoy a high
+private utility from marriage $\theta_{h}$ offer favourable allocations
+$x^{*}$ to their wives such that divorce is less likely for these
+couples, and vice versa. Couples in which the husband enjoys greater
+benefit from the marriage are more likely to remain together after
+the wife receives the cash transfer. If husbands with higher gains
+from marriage are also less likely to perpetrate violence, then this
+highlights one important selection mechanism by which CCTs can affect
+the composition of married couples.
+
+\subsubsection*{Result 4:}
+
+\textit{The effect of an increase in the wife's income on the equilibrium
+conflict rate is ambiguous. The change in the conflict rate with respect
+to the income of the wife }$\frac{\partial C}{\partial I_{w}}$ \textit{is
+more negative for women with relatively higher costs of conflict $\kappa_{w}$
+and for women with relatively lower utility of marriage $\theta_{w}.$}
+
+Even though the overall effects of a CCT for women is ambiguous for
+both conflict and divorce, this selection mechanism suggests that
+different types of women will be in each of these states. As income
+increases, women become more likely to reject the offers from their
+husbands. Once women are in the conflict state, those facing high
+costs of conflict choose to divorce, while those facing relatively
+lower costs remain in conflict.
+
+The results here follow from the same analysis as in the previous
+point. Note in particular that the wife's income does not shift her
+relative preferences between the conflict and divorce states. However,
+changes in the wife's income affect the $types$ of couples that remain
+in marriage, as given by their utility from marriage $\theta$ and
+their costs of conflict $\kappa$.
+
+With respect to the differential effect of female income for conflict
+among women with relatively higher costs of conflict, imagine two
+sets of women $H$ ($\kappa_{w}\geq\tilde{\kappa}$) and $L$ ($\kappa_{w}<\tilde{\kappa}$)
+facing different costs of conflict stratified by the threshold level
+$\tilde{\kappa}=\theta_{w}-\rho$. The conflict rate in the high cost
+group decreases or increases at a slower rate than that for women
+in the low costs group, as income changes. That is, $\frac{\partial C_{H}}{\partial I_{w}}<\frac{\partial C_{L}}{\partial I_{w}}$
+. Note that the inverse is true for divorce, that is, $\frac{\partial D_{H}}{\partial I_{w}}>\frac{\partial D_{L}}{\partial I_{w}}$. 
+
+\textit{The change in the conflict rate with respect to the income
+of the wife }$\frac{\partial C}{\partial I_{w}}$ \textit{is smaller.
+}As before, with two sets of women $H$ ($\theta_{w}\geq\tilde{\theta}$)
+and $L$ ($\theta_{w}<\tilde{\theta}$) facing different utility of
+marriage divided by $\tilde{\theta}<\kappa_{w}+\rho$, then conflict
+in the low utility group decreases or increases at a slower rate than
+that for women in the high utility group, as income changes. That
+is, $\frac{\partial C_{L}}{\partial I_{w}}<\frac{\partial C_{H}}{\partial I_{w}}$
+. Note that the inverse is true for divorce, that is, $\frac{\partial D_{L}}{\partial I_{w}}>\frac{\partial D_{H}}{\partial I_{w}}$.
+As before, this selection mechanism suggests that different types
+of women will be in each of these states. Once women are in the conflict
+state, those facing low utility from marriage choose to divorce, while
+those facing relatively higher utility choose to remain in the conflict
+state.
+
+This simple model of household relationships outlines the mechanisms
+through which the policies of interest may affect conflict and divorce.
+The model highlights some of the tradeoffs faced and suggests that
+both legal reforms and CCTs lead to important selection mechanisms
+which affect the $types$ of couples which remain in union. In particular,
+couples in which the partners enjoy greater utility from marriage
+$\theta$ and in which wives face lower costs from conflict $\kappa_{w}$
+are more likely to stay together following the introduction of these
+policies.
+\end{document}

@@ -1,0 +1,30 @@
+services:
+  collabora:
+    image: collabora/code:latest
+    container_name: onestop_collabora
+    restart: unless-stopped
+    ports:
+      - "9980:9980"
+    environment:
+      # Collabora uses this as the WOPI/host allowlist.
+      # Set BACKEND_PUBLIC_URL=https://your-production-domain in your environment.
+      aliasgroup1: "${BACKEND_PUBLIC_URL:-https://exile-pleading-sureness.ngrok-free.dev}"
+      username: admin
+      password: changeme_in_production
+      DONT_GEN_SSL_CERT: "YES"
+      server_name: "localhost:9980"
+      extra_params: >-
+        --o:ssl.enable=false
+        --o:ssl.termination=false
+        --o:net.listen=any
+        --o:net.post_allow.host[0]=.*
+        --o:storage.wopi.host[0]=host.docker.internal
+        --o:logging.level=warning
+    cap_add:
+      - MKNOD
+    networks:
+      - onestop_net
+
+networks:
+  onestop_net:
+    driver: bridge
