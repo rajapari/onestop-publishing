@@ -1,0 +1,128 @@
+# ========================
+# Python
+# ========================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pdb
+*.pyo
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+var/
+sdist/
+develop-eggs/
+.installed.cfg
+lib/
+lib64/
+
+# ========================
+# Environment Variables
+# ========================
+.env
+.env.*
+*.env
+.env.local
+.env.development
+.env.production
+.env.staging
+
+# ========================
+# Database
+# ========================
+*.db
+*.sqlite
+*.sqlite3
+instance/
+
+# ========================
+# Uploaded Files
+# ========================
+backend/uploads/
+
+# ========================
+# Virtual Environment
+# ========================
+venv/
+env/
+ENV/
+.venv/
+.env/
+
+# ========================
+# Frontend - Node
+# ========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+.pnp/
+.pnp.js
+
+# ========================
+# Frontend - Build Output
+# ========================
+dist/
+build/
+.next/
+.nuxt/
+out/
+.cache/
+
+# ========================
+# Logs
+# ========================
+*.log
+logs/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# ========================
+# OS Files
+# ========================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ========================
+# VS Code
+# ========================
+.vscode/
+*.code-workspace
+
+# ========================
+# PyCharm / JetBrains
+# ========================
+.idea/
+*.iml
+*.iws
+
+# ========================
+# Docker
+# ========================
+docker-compose.override.yml
+
+# ========================
+# Testing
+# ========================
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# ========================
+# Migrations (optional)
+# ========================
+# Uncomment below ONLY if you don't want to track migrations
+# backend/migrations/versions/
