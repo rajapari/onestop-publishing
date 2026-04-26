@@ -28,6 +28,21 @@ import base64
 load_dotenv(override=False)
 
 # ==========================
+# EMAIL (Resend)              ← ADD THIS BLOCK HERE (around line 29)
+# ==========================
+
+import resend
+resend.api_key = os.getenv("RESEND_API_KEY")
+
+def send_email(to_email, subject, html_body):
+    resend.Emails.send({
+        "from": "noreply@onestoppublishing.com",
+        "to": to_email,
+        "subject": subject,
+        "html": html_body
+    })
+
+# ==========================
 # CREATE APP
 # ==========================
 
@@ -454,7 +469,10 @@ def signup():
     db.session.commit()
 
     token = serializer.dumps(email, salt="email-verify")
-    print("VERIFY LINK:", f"http://localhost:3000/verify/{token}")
+    frontend_url = os.getenv("FRONTEND_URL", "http://localhost:3000")
+    verify_url = f"{frontend_url}/verify/{token}"
+    send_email(email, "Verify your OneStop account",
+    f"<p>Hi {name},</p><p>Click to verify your account: <a href='{verify_url}'>{verify_url}</a></p>")
     return jsonify({"message": "Verification email sent"})
 
 
@@ -503,7 +521,10 @@ def resend_verification():
     if not user:
         return jsonify({"message": "User not found"}), 404
     token = serializer.dumps(email, salt="email-verify")
-    print("RESEND VERIFY:", f"http://localhost:3000/verify/{token}")
+    frontend_url = os.getenv("FRONTEND_URL", "http://localhost:3000")
+    verify_url = f"{frontend_url}/verify/{token}"
+    send_email(email, "Verify your OneStop account",
+    f"<p>Click to verify your account: <a href='{verify_url}'>{verify_url}</a></p>")
     return jsonify({"message": "Verification email sent"})
 
 
@@ -514,7 +535,10 @@ def forgot_password():
     if not user:
         return jsonify({"message": "If email exists, reset link sent"})
     token = serializer.dumps(email, salt="reset-password")
-    print("RESET LINK:", f"http://localhost:3000/reset/{token}")
+    frontend_url = os.getenv("FRONTEND_URL", "http://localhost:3000")
+    reset_url = f"{frontend_url}/reset/{token}"
+    send_email(email, "Reset your OneStop password",
+    f"<p>Click to reset your password: <a href='{reset_url}'>{reset_url}</a></p>")
     return jsonify({"message": "Password reset link sent to email"})
 
 
