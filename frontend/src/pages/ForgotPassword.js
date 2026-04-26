@@ -1,57 +1,81 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import API_URL from "../config";
 
-function ForgotPassword() {
-  const [email, setEmail] = useState("");
+export default function ForgotPassword() {
+  const [email,     setEmail]     = useState("");
+  const [status,    setStatus]    = useState(null); // "success" | "error"
+  const [message,   setMessage]   = useState("");
+  const [loading,   setLoading]   = useState(false);
 
   const handleSubmit = async () => {
+    if (!email.trim()) { setStatus("error"); setMessage("Please enter your email address."); return; }
+    setLoading(true); setStatus(null);
     try {
-      const res = await fetch(
-        "http://localhost:5001/api/forgot-password",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ email })
-        }
-      );
-
+      const res  = await fetch(`${API_URL}/api/forgot-password`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
       const data = await res.json();
-
-      alert(data.message);
-
-    } catch (err) {
-      alert("Server error");
+      if (res.ok) {
+        setStatus("success");
+        setMessage(data.message || "Reset link sent! Please check your inbox.");
+      } else {
+        setStatus("error");
+        setMessage(data.message || "Something went wrong.");
+      }
+    } catch {
+      setStatus("error");
+      setMessage("Server error. Please try again.");
     }
+    setLoading(false);
   };
 
   return (
     <div className="auth-page">
       <div className="auth-card">
+        <div className="auth-badge">Password Reset</div>
 
-        <h2>Forgot password</h2>
-
+        <h2 className="auth-title">Forgot your password?</h2>
         <p className="auth-sub">
-          Enter your email to reset password
+          Enter your email address and we'll send you a link to reset your password.
         </p>
 
-        <input
-          className="auth-input"
-          placeholder="Email address"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+        {status === "error"   && <div className="auth-error">{message}</div>}
+        {status === "success" && (
+          <div className="auth-success">
+            ✅ {message}
+          </div>
+        )}
 
-        <button
-          className="btn-primary auth-btn"
-          onClick={handleSubmit}
-        >
-          Send reset link
-        </button>
+        {status !== "success" && (
+          <>
+            <input
+              className="auth-input"
+              type="email"
+              placeholder="Email address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+              autoComplete="email"
+              autoFocus
+            />
 
+            <button
+              className="btn-primary auth-btn"
+              onClick={handleSubmit}
+              disabled={loading}
+            >
+              {loading ? "Sending…" : "Send reset link →"}
+            </button>
+          </>
+        )}
+
+        <p className="auth-footer" style={{ marginTop: 20 }}>
+          Remembered it? <Link to="/login">Back to sign in</Link>
+        </p>
       </div>
     </div>
   );
 }
-
-export default ForgotPassword;

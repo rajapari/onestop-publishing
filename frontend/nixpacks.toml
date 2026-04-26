@@ -1,11 +1,11 @@
 [phases.setup]
-nixPkgs = ["nodejs_20"]
+nixPkgs = ["python311", "python311Packages.pip"]
 
 [phases.install]
-cmds = ["npm install"]
-
-[phases.build]
-cmds = ["npm run build"]
+cmds = [
+  "python -m venv /opt/venv",
+  "/opt/venv/bin/pip install -r requirements.txt"
+]
 
 [start]
-cmd = "npx serve -s build -l $PORT"
+cmd = "/opt/venv/bin/gunicorn app:app --bind 0.0.0.0:$PORT --workers 2 --timeout 120"
