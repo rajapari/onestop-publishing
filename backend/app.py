@@ -1,4 +1,5 @@
 from werkzeug.utils import secure_filename
+from werkzeug.middleware.proxy_fix import ProxyFix
 from flask import Flask, redirect, url_for, request, jsonify, Response, stream_with_context
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
@@ -28,15 +29,18 @@ import base64
 load_dotenv(override=False)
 
 # ==========================
-# EMAIL (Resend)              ← ADD THIS BLOCK HERE (around line 29)
+# EMAIL (Resend)
 # ==========================
 
 import resend
 resend.api_key = os.getenv("RESEND_API_KEY")
 
 def send_email(to_email, subject, html_body):
+    # Use onboarding@resend.dev until your domain is verified on Resend
+    # Once verified, change to: noreply@yourdomain.com
+    sender = os.getenv("RESEND_FROM_EMAIL", "onboarding@resend.dev")
     resend.Emails.send({
-        "from": "noreply@onestoppublishing.com",
+        "from": sender,
         "to": to_email,
         "subject": subject,
         "html": html_body
@@ -47,6 +51,11 @@ def send_email(to_email, subject, html_body):
 # ==========================
 
 app = Flask(__name__)
+
+# ProxyFix: Railway runs behind a reverse proxy.
+# Without this, url_for(_external=True) generates http:// instead of https://
+# which breaks Google OAuth (Error 400: redirect_uri_mismatch).
+app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1, x_for=1)
 
 # Absolute paths so CWD differences (local vs Railway) don't break storage.
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -417,16 +426,22 @@ oauth.register(
 
 @app.route("/auth/google")
 def google_login():
-    redirect_uri = url_for("google_callback", _external=True)
+    # Use BACKEND_URL directly to guarantee https:// in production.
+    # url_for(_external=True) was generating http:// on Railway (Error 400).
+    backend_url  = os.getenv("BACKEND_URL", "http://localhost:5001").rstrip("/")
+    redirect_uri = f"{backend_url}/auth/google/callback"
     return oauth.google.authorize_redirect(redirect_uri)
 
 
 @app.route("/auth/google/callback")
 def google_callback():
-    token     = oauth.google.authorize_access_token()
-    user_info = oauth.google.get("https://openidconnect.googleapis.com/v1/userinfo").json()
-    email     = user_info["email"]
-    name      = user_info.get("name")
+    # Must use the same redirect_uri as google_login — BACKEND_URL based.
+    backend_url  = os.getenv("BACKEND_URL", "http://localhost:5001").rstrip("/")
+    redirect_uri = f"{backend_url}/auth/google/callback"
+    token        = oauth.google.authorize_access_token(redirect_uri=redirect_uri)
+    user_info    = oauth.google.get("https://openidconnect.googleapis.com/v1/userinfo").json()
+    email        = user_info["email"]
+    name         = user_info.get("name")
 
     user = User.query.filter_by(email=email).first()
     if not user:
