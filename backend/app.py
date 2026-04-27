@@ -435,13 +435,12 @@ def google_login():
 
 @app.route("/auth/google/callback")
 def google_callback():
-    # Must use the same redirect_uri as google_login — BACKEND_URL based.
-    backend_url  = os.getenv("BACKEND_URL", "http://localhost:5001").rstrip("/")
-    redirect_uri = f"{backend_url}/auth/google/callback"
-    token        = oauth.google.authorize_access_token(redirect_uri=redirect_uri)
-    user_info    = oauth.google.get("https://openidconnect.googleapis.com/v1/userinfo").json()
-    email        = user_info["email"]
-    name         = user_info.get("name")
+    # Authlib already stores redirect_uri in the session from authorize_redirect().
+    # Do NOT pass it again here — causes "multiple values for keyword argument" error.
+    token     = oauth.google.authorize_access_token()
+    user_info = oauth.google.get("https://openidconnect.googleapis.com/v1/userinfo").json()
+    email     = user_info["email"]
+    name      = user_info.get("name")
 
     user = User.query.filter_by(email=email).first()
     if not user:
