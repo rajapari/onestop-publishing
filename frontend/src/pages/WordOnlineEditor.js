@@ -1,14 +1,10 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
+import API_URL from "../config";
 
 // ==============================
 // WordOnlineEditor
-//
-// Critical: Word Online requires the HOST PAGE to send
-// Host_PostmessageReady via postMessage to the iframe.
-// Without this, Word Online never activates edit mode
-// regardless of what CheckFileInfo returns.
 //
 // WOPI PostMessage protocol flow:
 // 1. iframe loads Word Online
@@ -24,20 +20,21 @@ const WORD_ONLINE_ORIGIN_PATTERNS = [
   "microsoftonline.com",
 ];
 
-function WordOnlineEditor() {
-  const { id } = useParams();
-  const navigate = useNavigate();
+export default function WordOnlineEditor() {
+  const { id }    = useParams();
+  const navigate  = useNavigate();
 
   const [editorUrl, setEditorUrl] = useState(null);
-  const [meta, setMeta]           = useState(null);
-  const [error, setError]         = useState(null);
-  const [loading, setLoading]     = useState(true);
-  const [status, setStatus]       = useState("Connecting to Word 365…");
+  const [meta,      setMeta]      = useState(null);
+  const [error,     setError]     = useState(null);
+  const [loading,   setLoading]   = useState(true);
+  const [status,    setStatus]    = useState("Connecting to Word 365…");
+  const [saved,     setSaved]     = useState(false);
 
-  const iframeRef  = useRef(null);
-  const readyRef   = useRef(false); // track if we've sent Host_PostmessageReady
+  const iframeRef = useRef(null);
+  const readyRef  = useRef(false);
 
-  // ── Load WOPI token & build editor URL ───────────────────────────────────
+  // ── Load WOPI token ───────────────────────────────────────────────────────
   useEffect(() => {
     const init = async () => {
       const token = localStorage.getItem("token");
@@ -45,14 +42,14 @@ function WordOnlineEditor() {
 
       try {
         const res = await axios.post(
-          `http://localhost:5001/api/wopi/token/${id}`,
+          `${API_URL}/api/wopi/token/${id}`,
           {},
           { headers: { Authorization: `Bearer ${token}` } }
         );
 
         const url = res.data.word_online_url;
 
-        // Detect localhost — ngrok not configured yet
+        // Detect if still pointing to localhost — ngrok not configured
         if (
           !url ||
           url.includes("WOPISrc=http%3A%2F%2Flocalhost") ||
@@ -63,7 +60,7 @@ function WordOnlineEditor() {
           setEditorUrl(url);
           setMeta(res.data);
         }
-      } catch (err) {
+      } catch {
         setError("failed");
       } finally {
         setLoading(false);
@@ -74,71 +71,52 @@ function WordOnlineEditor() {
   }, [id, navigate]);
 
   // ── WOPI PostMessage Protocol ─────────────────────────────────────────────
-  // This is THE critical piece. Without this, Word Online stays in view mode.
   useEffect(() => {
     if (!editorUrl) return;
 
-    const isWordOnlineOrigin = (origin) =>
+    const isWordOrigin = (origin) =>
       WORD_ONLINE_ORIGIN_PATTERNS.some((p) => origin.includes(p));
 
     const sendToFrame = (messageObj) => {
       try {
         iframeRef.current?.contentWindow?.postMessage(
-          JSON.stringify(messageObj),
-          "*"   // Word Online is cross-origin; use "*" as target
+          JSON.stringify(messageObj), "*"
         );
       } catch (e) {
         console.warn("postMessage to iframe failed:", e);
       }
     };
 
-    // ── Handle incoming messages from Word Online ─────────────────────────
     const handleMessage = (event) => {
-      // Accept messages from Word Online domains
-      if (!isWordOnlineOrigin(event.origin)) return;
+      if (!isWordOrigin(event.origin)) return;
 
       let msg;
       try {
         msg = typeof event.data === "string" ? JSON.parse(event.data) : event.data;
-      } catch {
-        return;
-      }
+      } catch { return; }
 
       const msgId = msg?.MessageId || msg?.id;
 
       switch (msgId) {
-
-        // Word Online signals it has loaded and is ready
         case "App_LoadingStatus":
           setStatus("Word 365 loaded");
-          // If we haven't sent Host_PostmessageReady yet, send it now
           if (!readyRef.current) {
             readyRef.current = true;
-            sendToFrame({
-              MessageId: "Host_PostmessageReady",
-              SendTime:  Date.now(),
-              Values:    {}
-            });
+            sendToFrame({ MessageId: "Host_PostmessageReady", SendTime: Date.now(), Values: {} });
           }
           break;
 
-        // Word Online requests edit mode activation
         case "UI_Edit":
-          sendToFrame({
-            MessageId: "Host_PostmessageReady",
-            SendTime:  Date.now(),
-            Values:    {}
-          });
+          sendToFrame({ MessageId: "Host_PostmessageReady", SendTime: Date.now(), Values: {} });
           break;
 
-        // Word Online signals a save completed
         case "File_Saved":
         case "Doc_Save":
           setStatus("Saved ✓");
-          setTimeout(() => setStatus(""), 3000);
+          setSaved(true);
+          setTimeout(() => { setStatus(""); setSaved(false); }, 3000);
           break;
 
-        // Word Online signals it's closing
         case "App_PopState":
         case "UI_Close":
           navigate(-1);
@@ -153,24 +131,15 @@ function WordOnlineEditor() {
     return () => window.removeEventListener("message", handleMessage);
   }, [editorUrl, navigate]);
 
-  // ── Send Host_PostmessageReady when iframe finishes loading ───────────────
-  // This is the PRIMARY trigger. We send it as soon as the iframe
-  // reports onLoad — Word Online checks for this message on startup.
+  // ── Send Host_PostmessageReady on iframe load ─────────────────────────────
   const handleIframeLoad = () => {
     if (readyRef.current) return;
     readyRef.current = true;
-
     setStatus("Activating edit mode…");
-
-    // Small delay to let Word Online's JS initialise before we post
     setTimeout(() => {
       try {
         iframeRef.current?.contentWindow?.postMessage(
-          JSON.stringify({
-            MessageId: "Host_PostmessageReady",
-            SendTime:  Date.now(),
-            Values:    {}
-          }),
+          JSON.stringify({ MessageId: "Host_PostmessageReady", SendTime: Date.now(), Values: {} }),
           "*"
         );
         setStatus("Edit mode active");
@@ -181,60 +150,62 @@ function WordOnlineEditor() {
     }, 800);
   };
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // RENDER
-  // ─────────────────────────────────────────────────────────────────────────
-
+  // ── Loading ───────────────────────────────────────────────────────────────
   if (loading) {
     return (
       <div style={s.center}>
+        <div style={s.wordIcon}>W</div>
         <div style={s.spinner} />
         <p style={s.loadingText}>Connecting to Word 365…</p>
+        <p style={s.loadingSubtext}>Preparing your document</p>
       </div>
     );
   }
 
+  // ── Localhost / ngrok error ───────────────────────────────────────────────
   if (error === "localhost") {
     return (
       <div style={s.center}>
         <div style={s.errorBox}>
-          <div style={{ fontSize: "48px", textAlign: "center", marginBottom: "12px" }}>☁️</div>
-          <h3 style={s.errorTitle}>One-time ngrok setup needed</h3>
-          <p style={s.errorText}>
-            Word 365 Online needs a public HTTPS URL to reach your server.
-            Set up ngrok (free, 2 minutes) and it works exactly like LibreOffice.
-          </p>
+          <div style={{ textAlign: "center", marginBottom: 20 }}>
+            <div style={{ fontSize: 48, marginBottom: 10 }}>☁️</div>
+            <div style={s.errorBadge}>Setup Required</div>
+            <h3 style={s.errorTitle}>One-time ngrok setup needed</h3>
+            <p style={s.errorText}>
+              Word 365 Online needs a public HTTPS URL to reach your server.
+              Set up ngrok once (free, ~2 minutes) and it works exactly like LibreOffice.
+            </p>
+          </div>
 
           <div style={s.stepsBox}>
-            <p style={{ margin: "0 0 12px", fontWeight: 700, fontSize: "14px" }}>
-              Setup steps (do once):
+            <p style={{ margin: "0 0 14px", fontWeight: 700, fontSize: 13, color: "var(--navy)", textTransform: "uppercase", letterSpacing: "0.8px" }}>
+              Setup Steps
             </p>
-
             {[
               <>Download ngrok from <a href="https://ngrok.com/download" target="_blank" rel="noreferrer" style={s.link}>ngrok.com/download</a> and sign up for a free account.</>,
               <>Open a new terminal and run: <code style={s.code}>ngrok http 5001</code></>,
               <>Copy the <strong>https://</strong> URL ngrok gives you (e.g. <code style={s.inlineCode}>https://abc123.ngrok-free.app</code>)</>,
               <>Update <code style={s.inlineCode}>backend/.env</code>: <code style={s.code}>BACKEND_URL=https://abc123.ngrok-free.app</code></>,
               <>Update <code style={s.inlineCode}>docker-compose.yml</code>: <code style={s.code}>aliasgroup1: "https://abc123.ngrok-free.app"</code></>,
-              <>Restart Flask and Collabora, then try again. ✅</>,
+              <>Restart Flask and Collabora, then try again ✅</>,
             ].map((step, i) => (
               <div key={i} style={s.step}>
                 <span style={s.stepNum}>{i + 1}</span>
-                <p style={{ margin: 0, fontSize: "13px", color: "#444", lineHeight: 1.5 }}>{step}</p>
+                <p style={{ margin: 0, fontSize: 13, color: "var(--text)", lineHeight: 1.6 }}>{step}</p>
               </div>
             ))}
           </div>
 
-          <p style={s.noteText}>
-            💡 Free ngrok gives a new URL each session. Get a fixed domain free at
+          <div style={s.noteBox}>
+            <strong>💡 Tip:</strong> Free ngrok gives a new URL each session. Get a fixed free domain at
             dashboard.ngrok.com → Domains → Create Domain, then use:
             <code style={s.code}>ngrok http --domain=your-domain.ngrok-free.app 5001</code>
-          </p>
+          </div>
 
           <div style={s.errorActions}>
             <button style={s.btnSecondary} onClick={() => navigate(-1)}>← Back</button>
             <button style={s.btnPrimary} onClick={() => navigate(`/editor/${id}`)}>
-              Open in LibreOffice Instead
+              📝 Open in LibreOffice Instead
             </button>
           </div>
         </div>
@@ -242,23 +213,28 @@ function WordOnlineEditor() {
     );
   }
 
+  // ── Generic error ─────────────────────────────────────────────────────────
   if (error) {
     return (
       <div style={s.center}>
-        <div style={{ ...s.errorBox, maxWidth: "420px" }}>
-          <h3 style={{ color: "#c0392b", margin: "0 0 12px" }}>⚠️ Failed to load</h3>
-          <p style={{ color: "#555", fontSize: "14px" }}>
-            Could not connect to Word Online. Make sure Flask is running and ngrok is active.
+        <div style={{ ...s.errorBox, maxWidth: 440, textAlign: "center" }}>
+          <div style={{ fontSize: 48, marginBottom: 12 }}>⚠️</div>
+          <h3 style={s.errorTitle}>Failed to load Word 365</h3>
+          <p style={s.errorText}>
+            Could not connect to Word Online. Make sure Flask is running and your backend URL is correct.
           </p>
-          <button style={{ ...s.btnSecondary, marginTop: "16px" }} onClick={() => navigate(-1)}>
-            ← Back
-          </button>
+          <div style={{ display: "flex", gap: 10, justifyContent: "center", marginTop: 20 }}>
+            <button style={s.btnSecondary} onClick={() => navigate(-1)}>← Back</button>
+            <button style={s.btnPrimary} onClick={() => navigate(`/editor/${id}`)}>
+              📝 Use LibreOffice
+            </button>
+          </div>
         </div>
       </div>
     );
   }
 
-  // ── Full-screen editor ────────────────────────────────────────────────────
+  // ── Full-screen Editor ────────────────────────────────────────────────────
   return (
     <div style={s.page}>
 
@@ -269,15 +245,19 @@ function WordOnlineEditor() {
         <div style={s.titleArea}>
           <div style={s.wIcon}>W</div>
           <span style={s.docName}>{meta?.manuscript_name}</span>
-          <span style={s.badge(meta?.can_write ? "#1a3a5a" : "#3a2a10", meta?.can_write ? "#60a5fa" : "#fbbf24")}>
-            {meta?.can_write ? "Word 365 — Edit Mode" : "Word 365 — View Only"}
+          <span style={s.modeBadge(meta?.can_write)}>
+            {meta?.can_write ? "Edit Mode" : "View Only"}
           </span>
-          {status && <span style={s.statusText}>{status}</span>}
+          {status && (
+            <span style={{ ...s.statusText, color: saved ? "#4ade80" : "#93c5fd" }}>
+              {status}
+            </span>
+          )}
         </div>
 
         <div style={s.toolbarRight}>
           <button style={s.switchBtn} onClick={() => navigate(`/editor/${id}`)}>
-            Switch to LibreOffice
+            📝 Switch to LibreOffice
           </button>
         </div>
       </div>
@@ -293,232 +273,282 @@ function WordOnlineEditor() {
         allowFullScreen
       />
 
+      <style>{`
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to   { transform: rotate(360deg); }
+        }
+      `}</style>
     </div>
   );
 }
 
-// ── Styles ───────────────────────────────────────────────────────────────────
-
+// ── Styles ────────────────────────────────────────────────────────────────────
 const s = {
+  // Full-screen editor
   page: {
     display: "flex",
     flexDirection: "column",
     height: "100vh",
     overflow: "hidden",
-    background: "#1a3a6a",
+    background: "#0F2344",
   },
   toolbar: {
     display: "flex",
     alignItems: "center",
-    gap: "12px",
+    gap: 12,
     padding: "8px 16px",
-    background: "#1a3a6a",
-    borderBottom: "2px solid #2a5a9a",
-    minHeight: "52px",
+    background: "#0F2344",
+    borderBottom: "1px solid rgba(255,255,255,0.1)",
+    minHeight: 52,
     flexShrink: 0,
   },
   backBtn: {
     background: "transparent",
-    border: "1px solid #3a6a9a",
-    color: "#a0c0e0",
+    border: "1px solid rgba(255,255,255,0.2)",
+    color: "rgba(255,255,255,0.7)",
     padding: "6px 14px",
-    borderRadius: "6px",
+    borderRadius: 6,
     cursor: "pointer",
-    fontSize: "13px",
+    fontSize: 13,
     whiteSpace: "nowrap",
+    fontFamily: "var(--font-body)",
+    transition: "all 0.18s",
   },
   titleArea: {
     flex: 1,
     display: "flex",
     alignItems: "center",
-    gap: "10px",
+    gap: 10,
     overflow: "hidden",
   },
   wIcon: {
-    background: "#2b5eb7",
+    background: "#2B5EB7",
     color: "#fff",
     fontWeight: 900,
-    fontSize: "15px",
-    width: "30px",
-    height: "30px",
-    borderRadius: "4px",
+    fontSize: 15,
+    width: 30,
+    height: 30,
+    borderRadius: 6,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     flexShrink: 0,
+    fontFamily: "var(--font-body)",
   },
   docName: {
-    color: "#e0f0ff",
+    color: "rgba(255,255,255,0.9)",
     fontWeight: 600,
-    fontSize: "15px",
+    fontSize: 14,
     overflow: "hidden",
     textOverflow: "ellipsis",
     whiteSpace: "nowrap",
+    fontFamily: "var(--font-body)",
   },
-  badge: (bg, color) => ({
+  modeBadge: (canWrite) => ({
     padding: "2px 10px",
-    borderRadius: "20px",
-    fontSize: "11px",
-    fontWeight: 600,
+    borderRadius: 100,
+    fontSize: 11,
+    fontWeight: 700,
     whiteSpace: "nowrap",
-    background: bg,
-    color: color,
-    border: `1px solid ${color}50`,
     flexShrink: 0,
+    background: canWrite ? "rgba(29,158,140,0.2)" : "rgba(201,150,26,0.2)",
+    color:      canWrite ? "#26C4AE" : "#F5C842",
+    border:     `1px solid ${canWrite ? "rgba(29,158,140,0.4)" : "rgba(201,150,26,0.4)"}`,
   }),
   statusText: {
-    fontSize: "12px",
-    color: "#80d0a0",
+    fontSize: 12,
     fontStyle: "italic",
+    fontFamily: "var(--font-body)",
+    transition: "color 0.3s",
   },
   toolbarRight: {
     display: "flex",
     alignItems: "center",
-    gap: "10px",
+    gap: 10,
     flexShrink: 0,
   },
   switchBtn: {
-    background: "#0f2540",
-    border: "1px solid #3a6a9a",
-    color: "#a0c0e0",
+    background: "rgba(255,255,255,0.08)",
+    border: "1px solid rgba(255,255,255,0.15)",
+    color: "rgba(255,255,255,0.75)",
     padding: "7px 14px",
-    borderRadius: "6px",
+    borderRadius: 6,
     cursor: "pointer",
-    fontSize: "13px",
+    fontSize: 13,
     whiteSpace: "nowrap",
+    fontFamily: "var(--font-body)",
+    transition: "all 0.18s",
   },
-  iframe: {
-    flex: 1,
-    border: "none",
-    width: "100%",
-  },
+  iframe: { flex: 1, border: "none", width: "100%" },
+
+  // Loading / error center
   center: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
     minHeight: "100vh",
-    background: "#f5f5f5",
-    padding: "20px",
+    background: "var(--bg)",
+    padding: 24,
+  },
+  wordIcon: {
+    width: 56, height: 56,
+    background: "#2B5EB7",
+    color: "white",
+    fontWeight: 900,
+    fontSize: 28,
+    borderRadius: 12,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 20,
+    fontFamily: "var(--font-body)",
   },
   spinner: {
-    width: "40px",
-    height: "40px",
-    border: "4px solid #e0e0e0",
-    borderTop: "4px solid #2b5eb7",
+    width: 36, height: 36,
+    border: "3px solid var(--border)",
+    borderTop: "3px solid #2B5EB7",
     borderRadius: "50%",
     animation: "spin 0.8s linear infinite",
+    marginBottom: 16,
   },
   loadingText: {
-    marginTop: "16px",
-    color: "#666",
-    fontSize: "15px",
+    fontFamily: "var(--font-display)",
+    fontSize: 18,
+    fontWeight: 700,
+    color: "var(--navy)",
+    margin: 0,
   },
+  loadingSubtext: {
+    fontSize: 13,
+    color: "var(--text-muted)",
+    marginTop: 6,
+  },
+
+  // Error box
   errorBox: {
-    background: "#fff",
-    border: "1px solid #e0e0e0",
-    borderRadius: "16px",
-    padding: "32px",
-    maxWidth: "620px",
+    background: "white",
+    border: "1px solid var(--border)",
+    borderRadius: 16,
+    padding: "32px 36px",
+    maxWidth: 620,
     width: "100%",
-    boxShadow: "0 4px 24px rgba(0,0,0,0.08)",
+    boxShadow: "var(--shadow-lg)",
+  },
+  errorBadge: {
+    display: "inline-block",
+    background: "#FEF3C7",
+    color: "#92400E",
+    border: "1px solid #FDE68A",
+    fontSize: 11,
+    fontWeight: 700,
+    letterSpacing: "0.8px",
+    textTransform: "uppercase",
+    padding: "4px 12px",
+    borderRadius: 100,
+    marginBottom: 12,
   },
   errorTitle: {
-    margin: "0 0 12px",
-    fontSize: "20px",
+    margin: "0 0 10px",
+    fontSize: 22,
     fontWeight: 700,
-    color: "#1a1a2e",
-    textAlign: "center",
+    fontFamily: "var(--font-display)",
+    color: "var(--navy)",
+    letterSpacing: "-0.3px",
   },
   errorText: {
-    fontSize: "14px",
-    color: "#555",
-    lineHeight: 1.6,
-    marginBottom: "20px",
-    textAlign: "center",
+    fontSize: 14,
+    color: "var(--text-muted)",
+    lineHeight: 1.7,
+    margin: "0 0 4px",
   },
   stepsBox: {
-    background: "#f8f8f8",
-    borderRadius: "12px",
-    padding: "20px",
-    marginBottom: "16px",
+    background: "var(--bg)",
+    border: "1px solid var(--border)",
+    borderRadius: 12,
+    padding: 20,
+    marginBottom: 16,
     display: "flex",
     flexDirection: "column",
-    gap: "14px",
+    gap: 14,
   },
-  step: {
-    display: "flex",
-    gap: "12px",
-    alignItems: "flex-start",
-  },
+  step: { display: "flex", gap: 12, alignItems: "flex-start" },
   stepNum: {
-    width: "24px",
-    height: "24px",
+    width: 24, height: 24,
     borderRadius: "50%",
-    background: "#2b5eb7",
-    color: "#fff",
+    background: "var(--navy)",
+    color: "white",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     fontWeight: 700,
-    fontSize: "12px",
+    fontSize: 12,
     flexShrink: 0,
-    marginTop: "1px",
+    marginTop: 2,
+    fontFamily: "var(--font-body)",
   },
   code: {
     display: "block",
-    background: "#1e1e2e",
-    color: "#a0f0a0",
+    background: "#0F2344",
+    color: "#26C4AE",
     padding: "8px 12px",
-    borderRadius: "6px",
-    fontSize: "13px",
+    borderRadius: 6,
+    fontSize: 12,
     fontFamily: "monospace",
-    marginTop: "6px",
+    marginTop: 6,
     wordBreak: "break-all",
   },
   inlineCode: {
-    background: "#eee",
+    background: "var(--bg)",
+    border: "1px solid var(--border)",
     padding: "1px 6px",
-    borderRadius: "4px",
-    fontSize: "12px",
+    borderRadius: 4,
+    fontSize: 12,
     fontFamily: "monospace",
-    color: "#333",
+    color: "var(--navy)",
   },
-  noteText: {
-    fontSize: "12px",
-    color: "#888",
-    lineHeight: 1.6,
-    marginBottom: "20px",
-    background: "#fffdf0",
-    border: "1px solid #f0e060",
-    borderRadius: "8px",
-    padding: "10px 14px",
+  noteBox: {
+    fontSize: 12,
+    color: "var(--text-muted)",
+    lineHeight: 1.7,
+    marginBottom: 20,
+    background: "#FFFBEB",
+    border: "1px solid #FDE68A",
+    borderRadius: 8,
+    padding: "12px 16px",
   },
-  link: { color: "#2b5eb7", textDecoration: "underline" },
+  link: {
+    color: "#2B5EB7",
+    textDecoration: "underline",
+    fontWeight: 600,
+  },
   errorActions: {
     display: "flex",
     justifyContent: "flex-end",
-    gap: "10px",
+    gap: 10,
+    flexWrap: "wrap",
   },
   btnPrimary: {
-    background: "#2b5eb7",
-    color: "#fff",
+    background: "var(--navy)",
+    color: "white",
     border: "none",
-    padding: "9px 20px",
-    borderRadius: "8px",
+    padding: "10px 20px",
+    borderRadius: 8,
     cursor: "pointer",
     fontWeight: 600,
-    fontSize: "14px",
+    fontSize: 14,
+    fontFamily: "var(--font-body)",
+    transition: "background 0.2s",
   },
   btnSecondary: {
-    background: "#f5f5f5",
-    color: "#555",
-    border: "1px solid #ddd",
-    padding: "9px 18px",
-    borderRadius: "8px",
+    background: "var(--bg)",
+    color: "var(--text-muted)",
+    border: "1px solid var(--border)",
+    padding: "10px 18px",
+    borderRadius: 8,
     cursor: "pointer",
-    fontSize: "14px",
+    fontSize: 14,
+    fontFamily: "var(--font-body)",
   },
 };
-
-export default WordOnlineEditor;
