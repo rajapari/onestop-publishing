@@ -462,11 +462,13 @@ def google_callback():
 
 @app.route("/api/signup", methods=["POST"])
 def signup():
-    data     = request.json
-    name     = data.get("name", "").strip()
-    email    = data.get("email", "").strip().lower()
-    password = data.get("password", "")
+    data             = request.json
+    name             = data.get("name", "").strip()
+    email            = data.get("email", "").strip().lower()
+    password         = data.get("password", "")
+    confirm_password = data.get("confirm_password", "")
 
+    # ── Validation ────────────────────────────────────────────────────────────
     if len(name) < 3:
         return jsonify({"error": "Name must be at least 3 characters"}), 400
     if not re.match(r"^[\w\.-]+@[\w\.-]+\.\w+$", email):
@@ -474,36 +476,72 @@ def signup():
     if len(password) < 8:
         return jsonify({"error": "Password must be at least 8 characters"}), 400
     if not re.match(r"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$", password):
-        return jsonify({"error": "Weak password"}), 400
+        return jsonify({"error": "Password must include uppercase, lowercase, number and special character (@$!%*?&)"}), 400
+    if password != confirm_password:
+        return jsonify({"error": "Passwords do not match"}), 400
     if User.query.filter_by(email=email).first():
-        return jsonify({"error": "Email already registered"}), 400
+        return jsonify({"error": "This email is already registered"}), 400
 
-    user = User(name=name, email=email, password=bcrypt.hash(password[:72]))
+    # ── Create user — verified by default (email verification disabled for now) ─
+    user = User(
+        name        = name,
+        email       = email,
+        password    = bcrypt.hash(password[:72]),
+        is_verified = True   # Set True — email verification bypassed via Resend
+    )
     db.session.add(user)
     db.session.commit()
 
-    token = serializer.dumps(email, salt="email-verify")
-    frontend_url = os.getenv("FRONTEND_URL", "http://localhost:3000")
-    verify_url = f"{frontend_url}/verify/{token}"
-    send_email(email, "Verify your OneStop account",
-    f"<p>Hi {name},</p><p>Click to verify your account: <a href='{verify_url}'>{verify_url}</a></p>")
-    return jsonify({"message": "Verification email sent"})
+    # ── Send welcome email via Resend (non-blocking) ──────────────────────────
+    try:
+        send_email(
+            email,
+            "Welcome to OneStop Publishing!",
+            f"""
+            <div style="font-family: sans-serif; max-width: 560px; margin: auto; padding: 32px;">
+                <h2 style="color: #0F2344;">Welcome, {name}! 👋</h2>
+                <p style="color: #5C6B8A; line-height: 1.7;">
+                    Your OneStop Publishing account has been created successfully.
+                    You can now sign in and start managing your manuscripts.
+                </p>
+                <a href="{os.getenv('FRONTEND_URL', 'http://localhost:3000')}/login"
+                   style="display:inline-block; margin-top:20px; padding:12px 28px;
+                          background:#0F2344; color:white; border-radius:8px;
+                          text-decoration:none; font-weight:600;">
+                    Sign In →
+                </a>
+                <p style="margin-top:32px; font-size:12px; color:#8F9EBA;">
+                    If you did not create this account, please ignore this email.
+                </p>
+            </div>
+            """
+        )
+    except Exception as e:
+        # Email failure should NOT block account creation
+        app.logger.warning(f"Welcome email failed for {email}: {e}")
+
+    return jsonify({"message": "Account created successfully! You can now sign in."})
 
 
 @app.route("/api/verify/<token>")
 def verify_email(token):
+    # Email verification is currently disabled — users are auto-verified on signup.
+    # This route is kept for backward compatibility with any existing verify links.
     try:
         email = serializer.loads(token, salt="email-verify", max_age=86400)
     except Exception:
-        return jsonify({"message": "Invalid or expired token"}), 400
+        return jsonify({"message": "Invalid or expired verification link"}), 400
 
     user = User.query.filter_by(email=email).first()
     if not user:
         return jsonify({"message": "User not found"}), 404
 
+    if user.is_verified:
+        return jsonify({"message": "Email already verified. You can sign in."})
+
     user.is_verified = True
     db.session.commit()
-    return jsonify({"message": "Email verified"})
+    return jsonify({"message": "Email verified successfully! You can now sign in."})
 
 
 @app.route("/api/login", methods=["POST"])
@@ -530,30 +568,61 @@ def login():
 
 @app.route("/api/resend-verification", methods=["POST"])
 def resend_verification():
-    email = request.json.get("email")
+    # Email verification is disabled — users are auto-verified on signup.
+    # If user is not verified (legacy accounts), mark them as verified directly.
+    email = request.json.get("email", "").strip().lower()
     user  = User.query.filter_by(email=email).first()
     if not user:
-        return jsonify({"message": "User not found"}), 404
-    token = serializer.dumps(email, salt="email-verify")
-    frontend_url = os.getenv("FRONTEND_URL", "http://localhost:3000")
-    verify_url = f"{frontend_url}/verify/{token}"
-    send_email(email, "Verify your OneStop account",
-    f"<p>Click to verify your account: <a href='{verify_url}'>{verify_url}</a></p>")
-    return jsonify({"message": "Verification email sent"})
+        # Return generic message to prevent email enumeration
+        return jsonify({"message": "If this email exists, it has been verified."})
+    if not user.is_verified:
+        user.is_verified = True
+        db.session.commit()
+    return jsonify({"message": "Your account is verified. You can now sign in."})
 
 
 @app.route("/api/forgot-password", methods=["POST"])
 def forgot_password():
-    email = request.json.get("email")
+    email = request.json.get("email", "").strip().lower()
     user  = User.query.filter_by(email=email).first()
+    # Always return same message to prevent email enumeration
     if not user:
-        return jsonify({"message": "If email exists, reset link sent"})
-    token = serializer.dumps(email, salt="reset-password")
+        return jsonify({"message": "If this email is registered, a reset link has been sent."})
+
+    token        = serializer.dumps(email, salt="reset-password")
     frontend_url = os.getenv("FRONTEND_URL", "http://localhost:3000")
-    reset_url = f"{frontend_url}/reset/{token}"
-    send_email(email, "Reset your OneStop password",
-    f"<p>Click to reset your password: <a href='{reset_url}'>{reset_url}</a></p>")
-    return jsonify({"message": "Password reset link sent to email"})
+    reset_url    = f"{frontend_url}/reset/{token}"
+
+    try:
+        send_email(
+            email,
+            "Reset your OneStop Publishing password",
+            f"""
+            <div style="font-family: sans-serif; max-width: 560px; margin: auto; padding: 32px;">
+                <h2 style="color: #0F2344;">Password Reset Request</h2>
+                <p style="color: #5C6B8A; line-height: 1.7;">
+                    Hi {user.name or "there"},<br><br>
+                    We received a request to reset your password.
+                    Click the button below to choose a new password.
+                    This link expires in <strong>1 hour</strong>.
+                </p>
+                <a href="{reset_url}"
+                   style="display:inline-block; margin-top:20px; padding:12px 28px;
+                          background:#0F2344; color:white; border-radius:8px;
+                          text-decoration:none; font-weight:600;">
+                    Reset Password →
+                </a>
+                <p style="margin-top:24px; font-size:12px; color:#8F9EBA;">
+                    If you didn't request this, you can safely ignore this email.
+                    Your password will not be changed.
+                </p>
+            </div>
+            """
+        )
+    except Exception as e:
+        app.logger.warning(f"Password reset email failed for {email}: {e}")
+
+    return jsonify({"message": "If this email is registered, a reset link has been sent."})
 
 
 @app.route("/api/reset-password", methods=["POST"])
