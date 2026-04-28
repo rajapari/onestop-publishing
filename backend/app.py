@@ -1486,10 +1486,48 @@ def serve_temp_file(token):
 
 
 # ==========================
+# AUTO MIGRATION
+# Safely adds new columns to existing tables without dropping data.
+# Runs on every deploy — uses IF NOT EXISTS so it's safe to re-run.
+# ==========================
+
+def run_migrations():
+    """Add any missing columns to existing tables."""
+    with app.app_context():
+        db.create_all()  # Create any brand new tables
+
+        # Run raw SQL migrations safely
+        migrations = [
+            # Add system_role column if it doesn't exist (added in v2)
+            """
+            ALTER TABLE "user"
+            ADD COLUMN IF NOT EXISTS system_role VARCHAR(50) DEFAULT 'author';
+            """,
+            # Backfill existing users with default role
+            """
+            UPDATE "user"
+            SET system_role = 'author'
+            WHERE system_role IS NULL;
+            """,
+        ]
+
+        try:
+            with db.engine.connect() as conn:
+                for sql in migrations:
+                    conn.execute(db.text(sql.strip()))
+                conn.commit()
+            app.logger.info("✅ Database migrations applied successfully")
+        except Exception as e:
+            app.logger.warning(f"⚠️  Migration warning (non-fatal): {e}")
+
+
+# Run migrations on startup (works for both gunicorn and direct run)
+run_migrations()
+
+
+# ==========================
 # RUN SERVER
 # ==========================
 
 if __name__ == "__main__":
-    with app.app_context():
-        db.create_all()
     app.run(port=5001, debug=True)
