@@ -21,6 +21,8 @@ import uuid
 import shutil
 import hashlib
 import base64
+import jwt as pyjwt
+import requests as http_requests
 
 # ==========================
 # LOAD ENV  (override=True forces re-read every restart)
@@ -103,14 +105,16 @@ def add_headers(response):
     return response
 
 
-_FE_URL = os.getenv("FRONTEND_URL", "http://localhost:3000")
-_ORIGINS = list({
+_FE_URL  = os.getenv("FRONTEND_URL",   "http://localhost:3000")
+_OO_URL  = os.getenv("ONLYOFFICE_URL", "").strip().rstrip("/")
+_ORIGINS = list(filter(None, {
     "http://localhost:3000",
     "https://*.officeapps.live.com",
     "https://*.microsoft.com",
     "https://*.ngrok-free.app",
     _FE_URL,
-})
+    _OO_URL,   # OnlyOffice Document Server origin
+}))
 CORS(
     app,
     origins=_ORIGINS,
@@ -450,6 +454,14 @@ def _get_urls():
     frontend_url = os.getenv("FRONTEND_URL", "http://localhost:3000")
     print(f"[WOPI] BACKEND_URL={backend_url}  FRONTEND_URL={frontend_url}")
     return backend_url, frontend_url
+
+
+# ==========================
+# ONLYOFFICE CONFIG
+# ==========================
+
+ONLYOFFICE_URL        = os.getenv("ONLYOFFICE_URL", "").strip().rstrip("/")
+ONLYOFFICE_JWT_SECRET = os.getenv("ONLYOFFICE_JWT_SECRET", "").strip()
 
 
 # ==========================
@@ -1426,6 +1438,192 @@ def wopi_file_operations(file_id):
         return Response(status=501)
 
     return Response(status=501)
+
+
+# ==========================
+# ONLYOFFICE ROUTES
+# ==========================
+
+@app.route("/api/onlyoffice/config/<int:manuscript_id>", methods=["POST"])
+@jwt_required()
+def onlyoffice_config(manuscript_id):
+    """
+    Returns the OnlyOffice DocEditor config for the given manuscript.
+    The frontend loads the OnlyOffice API JS from the OnlyOffice server
+    and passes this config directly to new DocsAPI.DocEditor(...).
+    """
+    user_id    = int(get_jwt_identity())
+    manuscript = db.session.get(Manuscript, manuscript_id)
+    if not manuscript:
+        return jsonify({"error": "Manuscript not found"}), 404
+
+    if not is_editable(manuscript.name):
+        return jsonify({"error": "This file type cannot be edited in the browser"}), 400
+
+    user    = db.session.get(User, user_id)
+    project = db.session.get(Project, manuscript.project_id)
+
+    # Determine write access — same logic as WOPI
+    is_owner     = (project.user_id == user_id)
+    collaborator = DocumentCollaborator.query.filter_by(
+        project_id=manuscript.project_id,
+        manuscript_name=manuscript.name,
+        user_id=user_id
+    ).first()
+
+    if not is_owner and not collaborator:
+        return jsonify({"error": "Access denied"}), 403
+
+    can_write = is_owner or (collaborator and collaborator.role == "editor")
+
+    backend_url, _ = _get_urls()
+
+    # Create a short-lived TempDownloadToken so OnlyOffice server
+    # can fetch the file without needing a user JWT.
+    TempDownloadToken.query.filter(
+        TempDownloadToken.expires_at < datetime.now(timezone.utc)
+    ).delete()
+    db.session.commit()
+
+    download_token = uuid.uuid4().hex + uuid.uuid4().hex
+    expires_at     = datetime.now(timezone.utc) + timedelta(seconds=300)
+    db.session.add(TempDownloadToken(
+        token=download_token,
+        manuscript_id=manuscript_id,
+        expires_at=expires_at,
+    ))
+    db.session.commit()
+
+    ext = manuscript.name.rsplit(".", 1)[-1].lower() if "." in manuscript.name else "docx"
+
+    # Unique document key — changes on every save so OnlyOffice reloads the file
+    ts  = manuscript.last_modified or manuscript.uploaded_at
+    key = f"ms_{manuscript_id}_{int(ts.timestamp() * 1000) if ts else manuscript_id}"
+
+    config = {
+        "documentType": "word",
+        "height":       "100%",
+        "width":        "100%",
+        "document": {
+            "fileType": ext,
+            "key":      key,
+            "title":    manuscript.name,
+            "url":      f"{backend_url}/uploads/temp/{download_token}",
+            "permissions": {
+                "edit":     can_write,
+                "download": True,
+                "print":    True,
+                "review":   can_write,
+                "comment":  True,
+            },
+        },
+        "editorConfig": {
+            "mode":        "edit" if can_write else "view",
+            "callbackUrl": f"{backend_url}/api/onlyoffice/callback/{manuscript_id}",
+            "user": {
+                "id":   str(user_id),
+                "name": user.name or user.email,
+            },
+            "customization": {
+                "autosave":      True,
+                "forcesave":     False,
+                "chat":          True,
+                "comments":      True,
+                "feedback":      False,
+                "help":          False,
+                "toolbarNoTabs": False,
+                "logo":          {"visible": False},
+            },
+        },
+    }
+
+    # Sign the config with JWT if a secret is configured
+    if ONLYOFFICE_JWT_SECRET:
+        config["token"] = pyjwt.encode(
+            config, ONLYOFFICE_JWT_SECRET, algorithm="HS256"
+        )
+
+    return jsonify({
+        "config":          config,
+        "onlyoffice_url":  ONLYOFFICE_URL,
+        "manuscript_name": manuscript.name,
+        "can_write":       can_write,
+    })
+
+
+@app.route("/api/onlyoffice/callback/<int:manuscript_id>", methods=["POST"])
+def onlyoffice_callback(manuscript_id):
+    """
+    OnlyOffice Document Server calls this endpoint after every save.
+
+    Status codes:
+      0  - No document found
+      1  - Document is being edited
+      2  - Document ready to save       ← we save here
+      3  - Document saving error
+      4  - Document closed, no changes
+      6  - Force-save triggered         ← we save here
+      7  - Force-save error
+    """
+    # Verify JWT from OnlyOffice if secret is configured
+    if ONLYOFFICE_JWT_SECRET:
+        auth_header = request.headers.get("Authorization", "")
+        token_str   = auth_header.replace("Bearer ", "").strip()
+        if not token_str:
+            body      = request.get_json(force=True) or {}
+            token_str = body.get("token", "")
+        if token_str:
+            try:
+                pyjwt.decode(
+                    token_str, ONLYOFFICE_JWT_SECRET, algorithms=["HS256"]
+                )
+            except Exception as e:
+                app.logger.warning(f"[OnlyOffice] JWT verify failed: {e}")
+                return jsonify({"error": 1}), 403
+
+    data   = request.get_json(force=True) or {}
+    status = data.get("status")
+
+    app.logger.info(
+        f"[OnlyOffice] Callback manuscript={manuscript_id} status={status}"
+    )
+
+    if status in (2, 6):   # Ready to save / force-save
+        download_url = data.get("url")
+        if not download_url:
+            app.logger.error("[OnlyOffice] No download URL in callback")
+            return jsonify({"error": 1}), 400
+
+        try:
+            manuscript = db.session.get(Manuscript, manuscript_id)
+            if not manuscript:
+                return jsonify({"error": 1}), 404
+
+            # Fetch the updated file from the OnlyOffice server
+            resp = http_requests.get(download_url, timeout=60)
+            resp.raise_for_status()
+
+            ext  = manuscript.name.rsplit(".", 1)[-1].lower() if "." in manuscript.name else "docx"
+            mime = MIME_MAP.get(ext, "application/octet-stream")
+
+            storage_upload_bytes(manuscript.filename, resp.content, content_type=mime)
+
+            manuscript.last_modified = datetime.now(timezone.utc)
+            db.session.commit()
+
+            app.logger.info(
+                f"[OnlyOffice] ✅ Saved manuscript={manuscript_id} "
+                f"({len(resp.content)} bytes)"
+            )
+
+        except Exception as e:
+            app.logger.error(
+                f"[OnlyOffice] Save error manuscript={manuscript_id}: {e}"
+            )
+            return jsonify({"error": 1}), 500
+
+    # Return {"error": 0} to acknowledge receipt to OnlyOffice
+    return jsonify({"error": 0})
 
 
 # ==========================
