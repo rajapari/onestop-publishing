@@ -66,8 +66,14 @@ export default function Signup() {
       });
       const data = await res.json();
       if (res.ok) {
-        alert(data.message || "Account created successfully!");
-        window.location.href = "/login";
+        // Auto-login: store JWT returned from signup
+        if (data.token) {
+          localStorage.setItem("token", data.token);
+          window.location.href = "/dashboard";
+        } else {
+          alert(data.message || "Account created! Please sign in.");
+          window.location.href = "/login";
+        }
       } else {
         setError(data.error || "Signup failed. Please try again.");
       }

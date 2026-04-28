@@ -147,12 +147,53 @@ serializer = URLSafeTimedSerializer(os.getenv("JWT_SECRET_KEY"))
 # MODELS
 # ==========================
 
+# ── Publishing Role Hierarchy ─────────────────────────────────────────────────
+# publisher_admin  → Platform owner. Full access to all projects and users.
+# editor_in_chief  → Oversees all editorial decisions and workflow.
+# managing_editor  → Assigns manuscripts, tracks submissions and deadlines.
+# section_editor   → Handles specific journal sections or book categories.
+# copy_editor      → Reviews grammar, style, formatting before publication.
+# peer_reviewer    → Provides expert review of submitted manuscripts.
+# author           → Submits and manages their own manuscripts. (Default)
+# subscriber       → End user — reads and downloads published content.
+
+SYSTEM_ROLES = [
+    "publisher_admin",
+    "editor_in_chief",
+    "managing_editor",
+    "section_editor",
+    "copy_editor",
+    "peer_reviewer",
+    "author",
+    "subscriber",
+]
+
+ROLE_LABELS = {
+    "publisher_admin": "Publisher Admin",
+    "editor_in_chief": "Editor-in-Chief",
+    "managing_editor": "Managing Editor",
+    "section_editor":  "Section Editor",
+    "copy_editor":     "Copy Editor",
+    "peer_reviewer":   "Peer Reviewer",
+    "author":          "Author",
+    "subscriber":      "Subscriber",
+}
+
+# Roles that can create/manage projects
+MANAGER_ROLES = {"publisher_admin", "editor_in_chief", "managing_editor"}
+
+# Roles that can upload/edit manuscripts
+EDITOR_ROLES  = {"publisher_admin", "editor_in_chief", "managing_editor",
+                 "section_editor", "copy_editor", "author"}
+
+
 class User(db.Model):
     id          = db.Column(db.Integer, primary_key=True)
     email       = db.Column(db.String(255), unique=True, nullable=False)
     password    = db.Column(db.String(255))
     name        = db.Column(db.String(255))
     is_verified = db.Column(db.Boolean, default=False)
+    system_role = db.Column(db.String(50), default="author")   # publishing hierarchy role
     projects    = db.relationship("Project", backref="owner", lazy=True)
 
 
@@ -450,6 +491,11 @@ def google_callback():
 
     access_token = create_access_token(
         identity=str(user.id),
+        additional_claims={
+            "name":  user.name  or "",
+            "email": user.email or "",
+            "role":  user.system_role or "author",
+        },
         expires_delta=timedelta(hours=24)
     )
     frontend_url = os.getenv("FRONTEND_URL", "http://localhost:3000")
@@ -487,7 +533,8 @@ def signup():
         name        = name,
         email       = email,
         password    = bcrypt.hash(password[:72]),
-        is_verified = True   # Set True — email verification bypassed via Resend
+        is_verified = True,    # Set True — email verification bypassed via Resend
+        system_role = "author" # Default role for new signups
     )
     db.session.add(user)
     db.session.commit()
@@ -520,7 +567,20 @@ def signup():
         # Email failure should NOT block account creation
         app.logger.warning(f"Welcome email failed for {email}: {e}")
 
-    return jsonify({"message": "Account created successfully! You can now sign in."})
+    # Generate JWT so frontend can optionally auto-login after signup
+    access_token = create_access_token(
+        identity=str(user.id),
+        additional_claims={
+            "name":  user.name  or "",
+            "email": user.email or "",
+            "role":  user.system_role or "author",
+        },
+        expires_delta=timedelta(hours=24)
+    )
+    return jsonify({
+        "message": "Account created successfully! You can now sign in.",
+        "token": access_token,
+    })
 
 
 @app.route("/api/verify/<token>")
@@ -558,11 +618,21 @@ def login():
 
     access_token = create_access_token(
         identity=str(user.id),
+        additional_claims={
+            "name":  user.name  or "",
+            "email": user.email or "",
+            "role":  user.system_role or "author",
+        },
         expires_delta=timedelta(hours=24)
     )
     return jsonify({
         "token": access_token,
-        "user":  {"id": user.id, "name": user.name, "email": user.email}
+        "user": {
+            "id":    user.id,
+            "name":  user.name,
+            "email": user.email,
+            "role":  user.system_role or "author",
+        }
     })
 
 
@@ -579,6 +649,71 @@ def resend_verification():
         user.is_verified = True
         db.session.commit()
     return jsonify({"message": "Your account is verified. You can now sign in."})
+
+
+@app.route("/api/me", methods=["GET"])
+@jwt_required()
+def get_me():
+    """Returns current user profile including role."""
+    user_id = get_jwt_identity()
+    user    = User.query.get(int(user_id))
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+    return jsonify({
+        "id":    user.id,
+        "name":  user.name,
+        "email": user.email,
+        "role":  user.system_role or "author",
+        "role_label": ROLE_LABELS.get(user.system_role, "Author"),
+    })
+
+
+@app.route("/api/me/role", methods=["PUT"])
+@jwt_required()
+def update_role():
+    """Publisher admin can update any user role. Others cannot."""
+    current_user_id = get_jwt_identity()
+    current_user    = User.query.get(int(current_user_id))
+
+    if current_user.system_role != "publisher_admin":
+        return jsonify({"error": "Only Publisher Admins can change roles"}), 403
+
+    data        = request.json
+    target_email = data.get("email", "").strip().lower()
+    new_role    = data.get("role", "")
+
+    if new_role not in SYSTEM_ROLES:
+        return jsonify({"error": f"Invalid role. Must be one of: {', '.join(SYSTEM_ROLES)}"}), 400
+
+    target_user = User.query.filter_by(email=target_email).first()
+    if not target_user:
+        return jsonify({"error": "User not found"}), 404
+
+    target_user.system_role = new_role
+    db.session.commit()
+    return jsonify({
+        "message": f"{target_user.name}'s role updated to {ROLE_LABELS[new_role]}"
+    })
+
+
+@app.route("/api/users", methods=["GET"])
+@jwt_required()
+def list_users():
+    """Publisher admin and editors can list users."""
+    current_user_id = get_jwt_identity()
+    current_user    = User.query.get(int(current_user_id))
+
+    if current_user.system_role not in MANAGER_ROLES:
+        return jsonify({"error": "Access denied"}), 403
+
+    users = User.query.all()
+    return jsonify([{
+        "id":         u.id,
+        "name":       u.name,
+        "email":      u.email,
+        "role":       u.system_role or "author",
+        "role_label": ROLE_LABELS.get(u.system_role, "Author"),
+    } for u in users])
 
 
 @app.route("/api/forgot-password", methods=["POST"])
